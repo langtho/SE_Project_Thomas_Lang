@@ -19,7 +19,7 @@ public class Main {
         System.out.println(bp.get(5,compressed));
         System.out.println(bp.get(6,compressed));
         System.out.println(bp.get(7,compressed));
-        System.out.println(bp.get(8,compressed));
+       
         int[] reuncompressed= bp.decompress(compressed);
         System.out.println(Arrays.toString(reuncompressed));
     }
