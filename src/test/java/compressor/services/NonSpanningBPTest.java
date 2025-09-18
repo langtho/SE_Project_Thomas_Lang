@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NonSpanningBPTest {
 
-    private final NonSpanningBP nonSpanningBP=new NonSpanningBP();
+    private final SpanningBP nonSpanningBP=new SpanningBP();
 
     static Stream<Arguments> provideTestArrays() {
         return Stream.of(

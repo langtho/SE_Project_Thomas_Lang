@@ -7,11 +7,12 @@ public class SpanningBP implements BitPacker {
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation
     public int[] compress(int[] array) {
-
+        if(array.length == 0) return new int[0];
         //The sum of all bits needed to represent all Integers of the Array
         int bits_needed = get_number_of_bits_needed(array);
         //The size of a chunk of data needed
         int chunk_size = bits_needed / array.length;
+        if(chunk_size==0){chunk_size=1;bits_needed=array.length;}
         //Size of the new array
         int new_array_size = (int) Math.ceil((10 + bits_needed) / 32.0);
         int[] result = new int[new_array_size];
@@ -23,7 +24,6 @@ public class SpanningBP implements BitPacker {
         int bit_cursor = 0; //points on the current bit
         //Loop that writes the bits onto the new array
         for (int i = 0; i < array.length; i++) {
-
             //The writing of the chunk size and unused_bits at the beginning of the first Integer for each Compressed Array
             if (i == 0 && bit_cursor == 0) {
                 result[result_cursor] |= chunk_size << bit_cursor;
@@ -37,7 +37,7 @@ public class SpanningBP implements BitPacker {
             if (bit_cursor + chunk_size > 32) {
                 int cut_point = 32 - bit_cursor;
                 int mask = (1 << cut_point) - 1;
-                int value = (array[i] >> 0) & mask;
+                int value = (array[i]) & mask;
                 result[result_cursor] |= value << bit_cursor;
                 result_cursor++;
                 bit_cursor = 0;
@@ -45,7 +45,7 @@ public class SpanningBP implements BitPacker {
                 value = (array[i] >> cut_point) & mask;
                 result[result_cursor] |= value << bit_cursor;
                 bit_cursor += chunk_size - cut_point;
-            } else if (bit_cursor - chunk_size == 0) {
+            } else if (32-bit_cursor == chunk_size ) {
                 result[result_cursor] |= array[i] << bit_cursor;
                 bit_cursor = 0;
                 result_cursor++;
@@ -62,6 +62,7 @@ public class SpanningBP implements BitPacker {
 
 
     public int[] decompress(int[] array) {
+        if(array.length == 0) return new int[0];
         int mask = (1 << 5) - 1;
         //Extraction of the size of a chunk of data needed
         int chunk_size = array[0] & mask;
