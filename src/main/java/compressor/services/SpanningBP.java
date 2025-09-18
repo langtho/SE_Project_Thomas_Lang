@@ -68,7 +68,7 @@ public class SpanningBP implements BitPacker {
         //Extraction of the number of chunks that will stay empty
         int unused_bits = array[0] >> 5 & mask;
         //Array size of the Array which will be returned
-        int decompressed_array_size = (array.length * 32) - 10 - unused_bits;
+        int decompressed_array_size = ((array.length * 32) - 10 - unused_bits)/chunk_size;
         int[] result = new int[decompressed_array_size];
 
         int cursor_array = 0;
@@ -77,13 +77,14 @@ public class SpanningBP implements BitPacker {
         for (int i = 0; i < decompressed_array_size; i++) {
             //Extraction of the Integer value
             if (32 - bit_cursor < chunk_size) {
-                int cut_point = 32 - bit_cursor;
-                int temp_value1 = array[cursor_array] >> cut_point;
-                int temp_mask = (1 << (chunk_size - cut_point)) - 1;
+                int cut_point = 32 - bit_cursor ;
+                int temp_mask= (1<<cut_point) - 1;
+                int temp_value1 = (array[cursor_array] >> bit_cursor)&temp_mask;
+                temp_mask = (1 << (chunk_size - cut_point)) - 1;
                 cursor_array++;
                 int temp_value2 = array[cursor_array] & temp_mask;
-                result[i] = temp_value1 << 3;
-                result[i] |= temp_value2;
+                result[i] = temp_value2 << cut_point;
+                result[i] |= temp_value1;
                 bit_cursor = chunk_size - cut_point;
             } else if (32 - bit_cursor == 0) {
                 bit_cursor = 0;

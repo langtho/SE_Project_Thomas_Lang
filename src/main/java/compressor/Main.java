@@ -7,8 +7,8 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        BitPacker bp= BitPackerFactory.createBitPacker("spanning");
-        int[] uncompressed={1,55,12,3,12,45,23,12};
+        BitPacker bp= BitPackerFactory.createBitPacker("nonspanning");
+        int[] uncompressed={Integer.MAX_VALUE, 0, Integer.MAX_VALUE};
         System.out.println( toBinaryString(uncompressed));
         int[] compressed= bp.compress(uncompressed);
         System.out.println( toBinaryString(compressed));
