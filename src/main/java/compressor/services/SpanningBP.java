@@ -119,9 +119,22 @@ public class SpanningBP implements BitPacker {
         int array_idex = bit_cursor / 32;
         //Cursor on the bit in the Integer
         int cursor = (bit_cursor % 32);
-        mask = (1 << chunk_size) - 1;
-        //Extraction of the value
-        return (array[array_idex] >> cursor) & mask;
+        int result;
+        if(32-cursor<chunk_size) {
+            int cut_point = 32 - bit_cursor ;
+            mask= (1<<cut_point) - 1;
+            int temp_value1 = (array[array_idex] >> bit_cursor)&mask;
+            mask = (1 << (chunk_size - cut_point)) - 1;
+            array_idex++;
+            int temp_value2 = array[array_idex] & mask;
+            result = temp_value2 << cut_point;
+            result |= temp_value1;
+        }else{
+            mask = (1 << chunk_size) - 1;
+            //Extraction of the value
+            result= (array[array_idex] >> cursor) & mask;
+        }
 
+        return result;
     }
 }
