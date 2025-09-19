@@ -8,7 +8,7 @@ public interface BitPacker {
     int get(int index, int[] array);
 
     //GET_NUMBER_OF_BITS_NEEDED function: Input: Array of Integers Output: Integer
-    //Returns an Integer of how many bits needed to represent the Input Array
+    //Returns an Integer of how many bits needed to represent the most of the Input Array
     default int get_number_of_bits_needed(int[] array) {
         int bits_needed = 0;
         for (int j : array) {
