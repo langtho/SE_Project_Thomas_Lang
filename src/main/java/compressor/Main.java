@@ -23,9 +23,9 @@ public class Main {
 
         public static String toBinaryString(int[] array) {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < array.length; i++) {
+            for (int j : array) {
                 // Konvertiert den Integer zu einem Binärstring
-                String binaryString = Integer.toBinaryString(array[i]);
+                String binaryString = Integer.toBinaryString(j);
 
                 // Fügt führende Nullen hinzu, um auf 32 Bits aufzufüllen
                 String paddedString = String.format("%32s", binaryString).replace(' ', '0');

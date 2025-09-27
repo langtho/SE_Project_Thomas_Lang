@@ -16,32 +16,32 @@ class BitPackerTest {
     static Stream<Arguments> provideTestArrays() {
         return Stream.of(
                 // --- Normal Cases ---
-                Arguments.of(new int[]{1, 2, 3, 4, 5, 6}),
-                Arguments.of(new int[]{10, 20, 30, 40, 50}),
-                Arguments.of(new int[]{100, 200, 300}),
+                Arguments.of((Object) new int[]{1, 2, 3, 4, 5, 6}),
+                Arguments.of((Object) new int[]{10, 20, 30, 40, 50}),
+                Arguments.of((Object) new int[]{100, 200, 300}),
 
                 // --- Smaller values (fit in 4 bits) ---
-                Arguments.of(new int[]{1, 5, 12, 8, 3, 15}),
-                Arguments.of(new int[]{0, 0, 0, 0, 0}),
+                Arguments.of((Object) new int[]{1, 5, 12, 8, 3, 15}),
+                Arguments.of((Object) new int[]{0, 0, 0, 0, 0}),
 
                 // --- Bit Boundary Cases ---
                 // Requires 10 bits (up to 1023)
-                Arguments.of(new int[]{500, 1000, 750, 250}),
+                Arguments.of((Object) new int[]{500, 1000, 750, 250}),
                 // Requires 12 bits (up to 4095)
-                Arguments.of(new int[]{2048, 4095, 1024}),
+                Arguments.of((Object) new int[]{2048, 4095, 1024}),
 
                 // --- Edge Cases ---
-                Arguments.of(new int[]{}), // Empty array
-                Arguments.of(new int[]{1}), // Single element
-                Arguments.of(new int[]{123456789}), // Single large value
+                Arguments.of((Object) new int[]{}), // Empty array
+                Arguments.of((Object) new int[]{1}), // Single element
+                Arguments.of((Object) new int[]{123456789}), // Single large value
 
                 // --- Tests for Integer.MAX_VALUE ---
-                Arguments.of(new int[]{Integer.MAX_VALUE, 0, Integer.MAX_VALUE}),
-                Arguments.of(new int[]{Integer.MAX_VALUE, 0, Integer.MAX_VALUE}),
+                Arguments.of((Object) new int[]{Integer.MAX_VALUE, 0, Integer.MAX_VALUE}),
+                Arguments.of((Object) new int[]{Integer.MAX_VALUE, 0, Integer.MAX_VALUE}),
 
                 // --- Mixed large and small values (overflow relevant) ---
-                Arguments.of(new int[]{1, 2, 1024, 3, 4, 2048}),
-                Arguments.of(new int[]{1, 2, 1024, 3, 4, 2048})
+                Arguments.of((Object) new int[]{1, 2, 1024, 3, 4, 2048}),
+                Arguments.of((Object) new int[]{1, 2, 1024, 3, 4, 2048})
 
                 // --- Negative Numbers Not solvable for the moment---
                 /*
