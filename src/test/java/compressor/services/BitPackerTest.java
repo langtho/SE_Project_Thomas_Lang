@@ -11,6 +11,7 @@ class BitPackerTest {
 
     private final SpanningBP spanningBP=new SpanningBP();
     private final NonSpanningBP nonSpanningBP=new NonSpanningBP();
+    private final OverflowBP overflow=new OverflowBP();
 
     static Stream<Arguments> provideTestArrays() {
         return Stream.of(
@@ -93,6 +94,30 @@ class BitPackerTest {
 
         for (int i=0; i<originalArray.length; i++) {
             int retrievedValue = spanningBP.get(i,compressed);
+            assertEquals(originalArray[i], retrievedValue, "The value retrieved via get() should match the original value.");
+        }
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArrays")
+    void testCompressionAndDecompressionOverflow(int[] originalArray) {
+
+        int[] compressed = overflow.compress(originalArray);
+        int[] decompressed = overflow.decompress(compressed);
+
+        assertArrayEquals(originalArray, decompressed, "The decompressed array should match the original.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTestArrays")
+    void testDirectAccessOverflow(int[] originalArray) {
+
+        int[] compressed = overflow.compress(originalArray);
+
+
+        for (int i=0; i<originalArray.length; i++) {
+            int retrievedValue = overflow.get(i,compressed);
             assertEquals(originalArray[i], retrievedValue, "The value retrieved via get() should match the original value.");
         }
 

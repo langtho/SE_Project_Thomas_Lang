@@ -30,8 +30,8 @@ public class NonSpanningBP implements BitPacker {
             for (int j = 0; j < chunks_per_integer; j++) {
                 //The writing of the chunk size and unused_chunks at the beginning of the first Integer for each Compressed Array
                 if (i == 0 && bit_cursor == 0) {
-                    result[i] |= chunk_size << bit_cursor;
-                    result[i] |= unused_chunks << 5;
+                    result[i] =insert_bits_in_result(0,bit_cursor,chunk_size,0,4);
+                    result[i] =insert_bits_in_result(result[i],5,unused_chunks,0,4);
                     if(chunk_size<10){
                         bit_cursor =(10%chunk_size==0)?chunk_size*(10/chunk_size)-1 : chunk_size*(10/chunk_size);
                         j=(bit_cursor/chunk_size);
@@ -40,7 +40,7 @@ public class NonSpanningBP implements BitPacker {
                 }
                 //Default case: Writing of the current Integer
                 else {
-                    result[i] |= array[array_cursor] << bit_cursor;
+                    result[i] = insert_bits_in_result(result[i],bit_cursor,array[array_cursor],0,chunk_size-1);
                     array_cursor++;
                     if(array_cursor == array.length){
                         break;
@@ -57,11 +57,10 @@ public class NonSpanningBP implements BitPacker {
 
     public int[] decompress(int[] array) {
         if(array.length == 0) return new int[0];
-        int mask =(1<<5)-1;
         //Extraction of the size of a chunk of data needed
-        int chunk_size = array[0] & mask;
+        int chunk_size =extractBits(array[0],0,4);
         //Extraction of the number of chunks that will stay empty
-        int unused_chunks = array[0]>>5 & mask;
+        int unused_chunks =extractBits(array[0],5,9);
         //Array size of the Array which will be returned
         int decompressed_array_size = ((array.length)*(32/chunk_size))-((int)Math.ceil(10.0/chunk_size))-unused_chunks;
         int[] result = new int[decompressed_array_size];
@@ -78,9 +77,8 @@ public class NonSpanningBP implements BitPacker {
                     j=(int)Math.ceil(10.0/chunk_size);
                 }
 
-                mask = (1<<chunk_size) - 1;
                 //Extraction of the Integer value
-                result[cursor_result] = (array[i] >> bit_cursor) & mask;
+                result[cursor_result] = extractBits(array[i],bit_cursor,bit_cursor+chunk_size-1);
                 bit_cursor+=chunk_size;
                 cursor_result++;
                 if(cursor_result == result.length){
@@ -95,11 +93,10 @@ public class NonSpanningBP implements BitPacker {
 
     public int get(int index, int[] array) {
 
-        int mask =(1<<5)-1;
         //Extraction of the size of a chunk of data needed
-        int chunk_size = array[0] & mask;
+        int chunk_size =extractBits(array[0],0,4);
         //Extraction of the number of chunks that will stay empty
-        int unused_chunks = array[0]>>5 & mask;
+        int unused_chunks =extractBits(array[0],5,9);
         //Array size to be able to check if the index is out of bounds
         int decompressed_array_size = ((array.length*32)/chunk_size)-((int)Math.ceil(10.0/chunk_size))-unused_chunks;
 
@@ -115,9 +112,8 @@ public class NonSpanningBP implements BitPacker {
         //Cursor on the bit in the Integer
         int cursor=(index%(chunks_per_integer))*chunk_size;
         if(32-cursor<chunk_size){cursor=0;}
-        mask= (1<<chunk_size) - 1;
         //Extraction of the value
-        return (array[array_idex]>>cursor) &mask;
+        return extractBits (array[array_idex],cursor,cursor+chunk_size-1) ;
 
     }
 

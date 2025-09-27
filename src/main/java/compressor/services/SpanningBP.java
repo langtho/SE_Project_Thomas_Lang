@@ -25,32 +25,25 @@ public class SpanningBP implements BitPacker {
         //Loop that writes the bits onto the new array
         for (int i = 0; i < array.length; i++) {
             //The writing of the chunk size and unused_bits at the beginning of the first Integer for each Compressed Array
-            if (i == 0 && bit_cursor == 0) {
-                result[result_cursor] |= chunk_size << bit_cursor;
-                result[result_cursor] |= nbr_unused_bit << 5;
-
+            if (i == 0) {
+                result[result_cursor] = insert_bits_in_result(0,bit_cursor,chunk_size,0,4);
+                result[result_cursor] = insert_bits_in_result(result[result_cursor],5,nbr_unused_bit,0,4);
                 bit_cursor = 10;
 
             }
             //Default case: Writing of the current Integer
-
             if (bit_cursor + chunk_size > 32) {
-                int cut_point = 32 - bit_cursor;
-                int mask = (1 << cut_point) - 1;
-                int value = (array[i]) & mask;
-                result[result_cursor] |= value << bit_cursor;
+                int first_part=32-bit_cursor;
+                result[result_cursor] =insert_bits_in_result(result[result_cursor],bit_cursor,array[i],0,first_part-1);
                 result_cursor++;
-                bit_cursor = 0;
-                mask = (1 << (chunk_size - cut_point)) - 1;
-                value = (array[i] >> cut_point) & mask;
-                result[result_cursor] |= value << bit_cursor;
-                bit_cursor += chunk_size - cut_point;
+                result[result_cursor]= insert_bits_in_result(0,0,array[i],first_part,chunk_size-1);
+                bit_cursor=chunk_size-first_part;
             } else if (32-bit_cursor == chunk_size ) {
-                result[result_cursor] |= array[i] << bit_cursor;
+                result[result_cursor] = insert_bits_in_result(result[result_cursor],bit_cursor,array[i],0,chunk_size-1);
                 bit_cursor = 0;
                 result_cursor++;
             } else {
-                result[result_cursor] |= array[i] << bit_cursor;
+                result[result_cursor]= insert_bits_in_result(result[result_cursor],bit_cursor,array[i],0,chunk_size-1);
                 bit_cursor += chunk_size;
             }
 
@@ -63,35 +56,30 @@ public class SpanningBP implements BitPacker {
 
     public int[] decompress(int[] array) {
         if(array.length == 0) return new int[0];
-        int mask = (1 << 5) - 1;
+
         //Extraction of the size of a chunk of data needed
-        int chunk_size = array[0] & mask;
+        int chunk_size = extractBits(array[0],0,4);
         //Extraction of the number of chunks that will stay empty
-        int unused_bits = array[0] >> 5 & mask;
+        int unused_bits =extractBits(array[0] ,5 ,9);
         //Array size of the Array which will be returned
         int decompressed_array_size = ((array.length * 32) - 10 - unused_bits)/chunk_size;
         int[] result = new int[decompressed_array_size];
 
         int cursor_array = 0;
         int bit_cursor = 10;
-        mask = (1 << chunk_size) - 1;
+
         for (int i = 0; i < decompressed_array_size; i++) {
             //Extraction of the Integer value
             if (32 - bit_cursor < chunk_size) {
-                int cut_point = 32 - bit_cursor ;
-                int temp_mask= (1<<cut_point) - 1;
-                int temp_value1 = (array[cursor_array] >> bit_cursor)&temp_mask;
-                temp_mask = (1 << (chunk_size - cut_point)) - 1;
+                result[i]=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,bit_cursor+31-bit_cursor);
                 cursor_array++;
-                int temp_value2 = array[cursor_array] & temp_mask;
-                result[i] = temp_value2 << cut_point;
-                result[i] |= temp_value1;
-                bit_cursor = chunk_size - cut_point;
+                result[i] = insert_bits_in_result(result[i],32-bit_cursor,array[cursor_array],0,chunk_size-(33-bit_cursor)) ;
+                bit_cursor = chunk_size-(32-bit_cursor);
             } else if (32 - bit_cursor == 0) {
                 bit_cursor = 0;
                 cursor_array++;
             } else {
-                result[i] = (array[cursor_array] >> bit_cursor) & mask;
+                result[i] =extractBits (array[cursor_array] , bit_cursor,bit_cursor+chunk_size-1);
                 bit_cursor += chunk_size;
             }
         }
@@ -101,11 +89,10 @@ public class SpanningBP implements BitPacker {
 
     public int get(int index, int[] array) {
 
-        int mask = (1 << 5) - 1;
         //Extraction of the size of a chunk of data needed
-        int chunk_size = array[0] & mask;
+        int chunk_size = extractBits(array[0],0,4);
         //Extraction of the number of chunks that will stay empty
-        int unused_bits = array[0] >> 5 & mask;
+        int unused_bits = extractBits(array[0],5,9);
         //Array size to be able to check if the index is out of bounds
         int decompressed_array_size = ((array.length * 32) ) - 10 - unused_bits;
 
@@ -116,23 +103,17 @@ public class SpanningBP implements BitPacker {
         }
         int bit_cursor = 10 + chunk_size * (index );
         //Cursor on the Integer in the compressed Array
-        int array_idex = bit_cursor / 32;
+        int array_index = bit_cursor / 32;
         //Cursor on the bit in the Integer
         int cursor = (bit_cursor % 32);
         int result;
         if(32-cursor<chunk_size) {
-            int cut_point = 32 - bit_cursor ;
-            mask= (1<<cut_point) - 1;
-            int temp_value1 = (array[array_idex] >> bit_cursor)&mask;
-            mask = (1 << (chunk_size - cut_point)) - 1;
-            array_idex++;
-            int temp_value2 = array[array_idex] & mask;
-            result = temp_value2 << cut_point;
-            result |= temp_value1;
+            result=insert_bits_in_result(0,0,array[array_index],cursor,31);
+            array_index++;
+            result = insert_bits_in_result(result,32-cursor,array[array_index],0,chunk_size-(33-cursor)) ;
         }else{
-            mask = (1 << chunk_size) - 1;
             //Extraction of the value
-            result= (array[array_idex] >> cursor) & mask;
+            result= extractBits(array[array_index] , cursor,cursor+chunk_size-1) ;
         }
 
         return result;

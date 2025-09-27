@@ -4,13 +4,11 @@ import compressor.services.*;
 
 public class BitPackerFactory {
     public static BitPacker createBitPacker(String type) {
-        switch (type) {
-            case "spanning":
-                return new SpanningBP();
-            case "nonspanning":
-                return new NonSpanningBP();
-            default:
-                return null;
-        }
+        return switch (type) {
+            case "spanning" -> new SpanningBP();
+            case "nonspanning" -> new NonSpanningBP();
+            case "overflow" -> new OverflowBP();
+            default -> null;
+        };
     }
 }
