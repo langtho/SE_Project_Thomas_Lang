@@ -60,7 +60,7 @@ public class OverflowBP implements BitPacker {
                 array[i]=overflow_counter;
                 overflow_counter++;
             }else {
-                result[result_cursor] |= 0 << bit_cursor;
+                result[result_cursor] |= 0;
                 bit_cursor++;
                 if(bit_cursor==32) {
                     bit_cursor=0;
@@ -215,10 +215,10 @@ public class OverflowBP implements BitPacker {
 
     Triplet<Integer,Integer,Integer> get_ideal_chunksize(int[] array) {
         int[] value_distribution=new int [32];
-        for (int i=0; i<array.length; i++) {
-            int minimal_bits_needed = 32 - Integer.numberOfLeadingZeros(array[i]);
-            if(minimal_bits_needed==0) {
-                minimal_bits_needed=1;
+        for (int j : array) {
+            int minimal_bits_needed = 32 - Integer.numberOfLeadingZeros(j);
+            if (minimal_bits_needed == 0) {
+                minimal_bits_needed = 1;
             }
             value_distribution[minimal_bits_needed - 1]++;
         }
@@ -248,7 +248,7 @@ public class OverflowBP implements BitPacker {
                 }
             }
         }
-        return new Triplet<Integer,Integer,Integer>(current_smallest_chunk,size_for_smallest_chunk,overflow_size);
+        return new Triplet<>(current_smallest_chunk,size_for_smallest_chunk,overflow_size);
     }
 
     public static String encodeEliasGamma(int value) {
@@ -256,9 +256,7 @@ public class OverflowBP implements BitPacker {
         int length=binary.length();
 
         StringBuilder prefix=new StringBuilder();
-        for (int i = 0; i < length-1; i++) {
-            prefix.append("0");
-        }
+        prefix.append("0".repeat(length - 1));
 
         return prefix.append(binary).toString();
     }
