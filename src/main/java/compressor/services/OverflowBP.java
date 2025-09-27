@@ -255,10 +255,10 @@ public class OverflowBP implements BitPacker {
         String binary=Integer.toBinaryString(value);
         int length=binary.length();
 
-        StringBuilder prefix=new StringBuilder();
-        prefix.append("0".repeat(length - 1));
+        String prefix = "0".repeat(length - 1) +
+                binary;
 
-        return prefix.append(binary).toString();
+        return prefix;
     }
 
     public static int decodeEliasGamma(int[] array) {
