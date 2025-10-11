@@ -6,13 +6,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Random;
+
 
 class BitPackerTest {
 
     String jsonFile="src/main/resources/performance_data.jsonl";
+    private static final int tests_per_case = 100;
+    private static final Random RANDOM = new Random();
+
     private final SpanningBP spanningBP=new SpanningBP(jsonFile);
     private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile);
     private final OverflowBP overflow=new OverflowBP(jsonFile);
+
 
     static Stream<Arguments> provideTestArrays() {
         return Stream.of(
@@ -50,6 +56,44 @@ class BitPackerTest {
                 Arguments.of(new int[]{-5, -10, -15})
                  */
         );
+    }
+
+    public static Stream<Arguments> randomTestData() {
+        return TestDataGenerator.generateAllTestCases(tests_per_case); // Generiert 100 Arrays für jede Kategorie
+    }
+
+    @ParameterizedTest
+    @MethodSource("randomTestData")
+    void testAll(int[] array) {
+        int[] compressed = nonSpanningBP.compress(array);
+        int[] decompressed = nonSpanningBP.decompress(compressed);
+        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+        if (array.length > 0) {
+            int i = RANDOM.nextInt(array.length);
+            int retrievedValue =nonSpanningBP.get(i, compressed);
+
+            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+        }
+
+        compressed = spanningBP.compress(array);
+        decompressed = spanningBP.decompress(compressed);
+        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+        if (array.length > 0) {
+            int i = RANDOM.nextInt(array.length);
+            int retrievedValue =spanningBP.get(i, compressed);
+
+            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+        }
+
+        compressed = overflow.compress(array);
+        decompressed = overflow.decompress(compressed);
+        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+        if (array.length > 0) {
+            int i = RANDOM.nextInt(array.length);
+            int retrievedValue =overflow.get(i, compressed);
+
+            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+        }
     }
 
     @ParameterizedTest

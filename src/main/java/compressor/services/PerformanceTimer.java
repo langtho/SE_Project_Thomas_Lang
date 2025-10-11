@@ -8,12 +8,12 @@ public class PerformanceTimer {
     private long startTime;
     private final ObjectMapper mapper;
     private final String filePath;
-    private final PerformanceData currentTimetaking;
+    private PerformanceData currentTimetaking;
 
     public PerformanceTimer(String filePath,String compressionType){
         this.filePath = filePath;
         this.mapper = new ObjectMapper();
-        this.mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        this.mapper.disable(SerializationFeature.INDENT_OUTPUT);
         this.currentTimetaking = new PerformanceData(compressionType);
     }
 
@@ -43,5 +43,6 @@ public class PerformanceTimer {
             System.err.println("Error writing performance data to file");
             e.printStackTrace();
         }
+        this.currentTimetaking=new PerformanceData(this.currentTimetaking.getCompressionType());
     }
 }
