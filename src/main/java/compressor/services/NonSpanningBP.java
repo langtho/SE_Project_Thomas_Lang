@@ -3,13 +3,26 @@ package compressor.services;
 import compressor.models.BitPacker;
 
 public class NonSpanningBP implements BitPacker {
-    
+    public PerformanceTimer timer=null;
+
+    public NonSpanningBP(String filePath) {
+        //Initialisation of timer
+        if(filePath!=null) this.timer = new PerformanceTimer(filePath,"NonSpanning");
+    }
+
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation 
     public int[] compress(int[] array) {
+        //Start of timetaking
+        if(timer!=null)timer.start();
+
         if(array.length == 0) return new int[0];
         //The sum of all bits needed to represent all Integers of the Array
         int bits_needed = get_number_of_bits_needed(array);
+
+        //Take time of the bit-needed function
+        if(timer!=null)timer.stop("BitNeeded");
+
         //The size of a chunk of data needed
         int chunk_size = bits_needed / array.length;
         if (chunk_size==0){chunk_size=1;}
@@ -22,6 +35,9 @@ public class NonSpanningBP implements BitPacker {
         int[] result = new int[new_array_size];
         //Number of chunks that will stay empty
         int unused_chunks=(new_array_size*chunks_per_integer)-((int)(Math.ceil(10.0/chunk_size)))-array.length;
+
+        //Take time of the bit-needed function
+        if(timer!=null)timer.stop("Setup");
 
         //Part that writes the bits onto the new array
         int array_cursor = 0; //points to the current treated Integer of the array
@@ -50,12 +66,23 @@ public class NonSpanningBP implements BitPacker {
 
             }
         }
+
+        //Stop of timetaking of writing on the compressed array
+        if(timer!=null){
+            timer.stop("Compressing");
+            timer.saveToJson("Compress",array.length,result.length);
+        }
+
         return result;
     }
 
 
 
     public int[] decompress(int[] array) {
+
+        //Start of timetaking
+        if(timer!=null)timer.start();
+
         if(array.length == 0) return new int[0];
         //Extraction of the size of a chunk of data needed
         int chunk_size =extractBits(array[0],0,4);
@@ -64,6 +91,9 @@ public class NonSpanningBP implements BitPacker {
         //Array size of the Array which will be returned
         int decompressed_array_size = ((array.length)*(32/chunk_size))-((int)Math.ceil(10.0/chunk_size))-unused_chunks;
         int[] result = new int[decompressed_array_size];
+
+        //Stop of Setup time taking
+        timer.stop("Setup");
 
         int cursor_result=0;
         for (int i = 0; i < array.length; i++) {
@@ -86,12 +116,21 @@ public class NonSpanningBP implements BitPacker {
                 }
             }
         }
+
+        //Stop of timetaking of writing on the decompressed array
+        if(timer!=null){
+            timer.stop("Decompressing");
+            timer.saveToJson("Decompress",result.length,array.length);
+        }
+
         return result;
     }
 
 
 
     public int get(int index, int[] array) {
+        //Start of timetaking
+        if(timer!=null)timer.start();
 
         //Extraction of the size of a chunk of data needed
         int chunk_size =extractBits(array[0],0,4);
@@ -113,7 +152,14 @@ public class NonSpanningBP implements BitPacker {
         int cursor=(index%(chunks_per_integer))*chunk_size;
         if(32-cursor<chunk_size){cursor=0;}
         //Extraction of the value
-        return extractBits (array[array_idex],cursor,cursor+chunk_size-1) ;
+        int result=extractBits (array[array_idex],cursor,cursor+chunk_size-1) ;
+
+        //Stop timetaking
+        if(timer!=null){
+            timer.stop("get");
+            timer.saveToJson("get",decompressed_array_size,array.length);
+        }
+        return result;
 
     }
 

@@ -1,6 +1,9 @@
 package compressor.models;
 
+import compressor.services.PerformanceTimer;
+
 public interface BitPacker {
+
     int[] compress(int[] array);
 
     int[] decompress(int[] array);

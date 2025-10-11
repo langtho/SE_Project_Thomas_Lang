@@ -7,7 +7,8 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        BitPacker bp= BitPackerFactory.createBitPacker("spanning");
+
+        BitPacker bp= BitPackerFactory.createBitPacker("spanning","src/main/resources/performance_data.jsonl");
         int[] uncompressed={100,200,300};
         System.out.println( toBinaryString(uncompressed));
         int[] compressed= bp.compress(uncompressed);

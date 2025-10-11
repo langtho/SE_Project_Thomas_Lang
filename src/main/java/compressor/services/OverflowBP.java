@@ -4,12 +4,25 @@ import compressor.models.BitPacker;
 import org.javatuples.Triplet;
 
 public class OverflowBP implements BitPacker {
+    private PerformanceTimer timer;
 
+    public OverflowBP(String filePath) {
+        //Initialisation of timer
+        if (filePath==null)this.timer= new PerformanceTimer(filePath,"Overflow");
+    }
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation
     public int[] compress(int[] array) {
+
+        //Start of timetaking
+        if(timer!=null)timer.start();
+
         if(array.length == 0) return new int[0];
         Triplet<Integer,Integer,Integer> triplet=get_ideal_chunksize(array);
+
+        //Take time of the bit-needed function
+        if(timer!=null)timer.stop("IdealChunkSize");
+
         //The size of a chunk of data needed
         int chunk_size = triplet.getValue0();
         //Size of the Overflow space
@@ -22,6 +35,9 @@ public class OverflowBP implements BitPacker {
         //Number of unused bits at the end of the compressed array (before the overflow area)
         int unused_bits=32-((((chunk_size+1)*array.length)+10+encoded_overflow_size.length())%32);
         int[] result = new int[new_array_size];
+
+        //Take time of the bit-needed function
+        if(timer!=null)timer.stop("Setup");
 
         int result_cursor = 0; //points to the current treated Integer of the array
         int bit_cursor = 0; //points on the current bit
@@ -89,11 +105,20 @@ public class OverflowBP implements BitPacker {
 
         }
 
+        //Stop of timetaking of writing on the compressed array
+        if(timer!=null){
+            timer.stop("Compressing");
+            timer.saveToJson("Compress",array.length,result.length);
+        }
 
         return result;
     }
 
     public int[] decompress(int[] array) {
+
+        //Start of timetaking
+        if(timer!=null)timer.start();
+
         if(array.length == 0) return new int[0];
         //Extraction of the size of a chunk of data needed
         int chunk_size =extractBits(array[0],0,4);
@@ -104,6 +129,9 @@ public class OverflowBP implements BitPacker {
         int array_length=((((array.length-overflow_size)*32)-10-unused_bits)/(chunk_size+1));
 
         int[] result = new int[array_length];
+
+        //Stop of Setup time taking
+        if (timer!=null)timer.stop("Setup");
 
         int cursor_array = 0;
         int bit_cursor = 10+(32-Integer.numberOfLeadingZeros(overflow_size+1))*2-1;
@@ -153,10 +181,20 @@ public class OverflowBP implements BitPacker {
                 result[i]=array[overflow_index];
             }
         }
+
+        //Stop of timetaking of writing on the decompressed array
+        if(timer!=null){
+            timer.stop("Decompressing");
+            timer.saveToJson("Decompress",result.length,array.length);
+        }
+
         return result;
     }
 
     public int get(int index, int[] array){
+        //Start of timetaking
+        if(timer!=null)timer.start();
+
         if(array.length == 0) return 0;
         //Extraction of the size of a chunk of data needed
         int chunk_size = extractBits(array[0],0,4);
@@ -210,6 +248,12 @@ public class OverflowBP implements BitPacker {
             overflow_index=array.length-overflow_index-1;
             result=array[overflow_index];
         }
+
+        //Stop timetaking
+        if(timer!=null){
+            timer.stop("get");
+            timer.saveToJson("get",array_length,array.length);
+        }
         return result;
     }
 
@@ -255,10 +299,10 @@ public class OverflowBP implements BitPacker {
         String binary=Integer.toBinaryString(value);
         int length=binary.length();
 
-        String prefix = "0".repeat(length - 1) +
-                binary;
+        StringBuilder prefix=new StringBuilder();
+        prefix.append("0".repeat(length - 1));
 
-        return prefix;
+        return prefix.append(binary).toString();
     }
 
     public static int decodeEliasGamma(int[] array) {

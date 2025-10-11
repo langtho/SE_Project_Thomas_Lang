@@ -9,9 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BitPackerTest {
 
-    private final SpanningBP spanningBP=new SpanningBP();
-    private final NonSpanningBP nonSpanningBP=new NonSpanningBP();
-    private final OverflowBP overflow=new OverflowBP();
+    String jsonFile="src/main/resources/performance_data.jsonl";
+    private final SpanningBP spanningBP=new SpanningBP(jsonFile);
+    private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile);
+    private final OverflowBP overflow=new OverflowBP(jsonFile);
 
     static Stream<Arguments> provideTestArrays() {
         return Stream.of(
