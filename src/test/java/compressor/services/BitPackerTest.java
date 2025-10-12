@@ -58,41 +58,47 @@ class BitPackerTest {
         );
     }
 
-    public static Stream<Arguments> randomTestData() {
+    public static Stream<Arguments> generateRandomArrays() {
         return TestDataGenerator.generateAllTestCases(tests_per_case); // Generiert 100 Arrays für jede Kategorie
     }
 
+    // Methode, die die Testdaten liefert (verwende deinen TestDataGenerator)
+    @MethodSource("generateRandomArrays")
     @ParameterizedTest
-    @MethodSource("randomTestData")
-    void testAll(int[] array) {
+    void testNonSpanning(int[] array) {
         int[] compressed = nonSpanningBP.compress(array);
         int[] decompressed = nonSpanningBP.decompress(compressed);
-        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+        assertArrayEquals(array, decompressed, "NonSpanning: The decompressed array should match the original.");
         if (array.length > 0) {
             int i = RANDOM.nextInt(array.length);
-            int retrievedValue =nonSpanningBP.get(i, compressed);
-
-            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+            int retrievedValue = nonSpanningBP.get(i, compressed);
+            assertEquals(retrievedValue, array[i], "NonSpanning: Retrieved value should match original at index " + i);
         }
+    }
 
-        compressed = spanningBP.compress(array);
-        decompressed = spanningBP.decompress(compressed);
-        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+    @MethodSource("generateRandomArrays")
+    @ParameterizedTest
+    void testSpanning(int[] array) {
+        int[] compressed = spanningBP.compress(array);
+        int[] decompressed = spanningBP.decompress(compressed);
+        assertArrayEquals(array, decompressed, "Spanning: The decompressed array should match the original.");
         if (array.length > 0) {
             int i = RANDOM.nextInt(array.length);
-            int retrievedValue =spanningBP.get(i, compressed);
-
-            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+            int retrievedValue = spanningBP.get(i, compressed);
+            assertEquals(retrievedValue, array[i], "Spanning: Retrieved value should match original at index " + i);
         }
+    }
 
-        compressed = overflow.compress(array);
-        decompressed = overflow.decompress(compressed);
-        assertArrayEquals(array, decompressed, "The decompressed array should match the original.");
+    @MethodSource("generateRandomArrays")
+    @ParameterizedTest
+    void testOverflow(int[] array) {
+        int[] compressed = overflow.compress(array);
+        int[] decompressed = overflow.decompress(compressed);
+        assertArrayEquals(array, decompressed, "Overflow: The decompressed array should match the original.");
         if (array.length > 0) {
             int i = RANDOM.nextInt(array.length);
-            int retrievedValue =overflow.get(i, compressed);
-
-            assertEquals(retrievedValue, array[i],"i:"+i+" | retrieved value:"+retrievedValue+"| array[i]"+array[i]);
+            int retrievedValue = overflow.get(i, compressed);
+            assertEquals(retrievedValue, array[i], "Overflow: Retrieved value should match original at index " + i);
         }
     }
 

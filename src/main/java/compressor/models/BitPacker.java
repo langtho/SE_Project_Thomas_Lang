@@ -22,16 +22,16 @@ public interface BitPacker {
     }
 
     default int insert_bits_in_result(int dest,int start_bit_dest,int source,int start_bit_source,int end_bit_source){
-        int numBitsToCopy = end_bit_source - start_bit_source + 1;
+        int numBitsToCopy = end_bit_source - start_bit_source +1;
 
         if (numBitsToCopy <= 0 || start_bit_source < 0 || start_bit_dest < 0) {
-            throw new IllegalArgumentException("Illegal Idex");
+            throw new IllegalArgumentException("Illegal Index");
         }
 
         long extractionMask = (1L << numBitsToCopy) - 1;
         extractionMask <<= start_bit_source;
 
-        int extractedBits=(int) ((source&extractionMask)>>start_bit_source);
+        int extractedBits=(int) ((source&extractionMask)>>>start_bit_source);
 
         long clearMask = (1L << numBitsToCopy) - 1;
         clearMask <<= start_bit_dest;
@@ -52,6 +52,6 @@ public interface BitPacker {
         long mask = (1L << numBits) - 1;
         mask <<= startIndex;
         int extractedBits = (int)(sourceInt & mask);
-        return extractedBits >> startIndex;
+        return extractedBits >>> startIndex;
     }
 }

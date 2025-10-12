@@ -100,7 +100,7 @@ def main():
     plot_compressed_size_vs_array_size(filtered_df, selected_compression_type)
     plot_stacked_bar_chart(filtered_df, selected_compression_type, selected_function_type)
     
-    '''
+    
     selected_compression_type = 'Spanning'
     selected_function_type = 'Compress'
     
@@ -128,7 +128,7 @@ def main():
     plot_time_vs_array_size(filtered_df, selected_compression_type, selected_function_type)
     plot_compressed_size_vs_array_size(filtered_df, selected_compression_type)
     plot_stacked_bar_chart(filtered_df, selected_compression_type, selected_function_type)
-    '''
+    
     
     plt.show()
 

@@ -97,18 +97,21 @@ public class SpanningBP implements BitPacker {
         int bit_cursor = 10;
 
         for (int i = 0; i < decompressed_array_size; i++) {
+
             //Extraction of the Integer value
-            if (32 - bit_cursor < chunk_size) {
-                result[i]=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,bit_cursor+31-bit_cursor);
+            if (32 - bit_cursor < chunk_size&&32-bit_cursor!=0) {
+                result[i]=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,31);
                 cursor_array++;
                 result[i] = insert_bits_in_result(result[i],32-bit_cursor,array[cursor_array],0,chunk_size-(33-bit_cursor)) ;
                 bit_cursor = chunk_size-(32-bit_cursor);
             } else if (32 - bit_cursor == 0) {
                 bit_cursor = 0;
                 cursor_array++;
+                i--;
             } else {
                 result[i] =extractBits (array[cursor_array] , bit_cursor,bit_cursor+chunk_size-1);
                 bit_cursor += chunk_size;
+
             }
         }
 

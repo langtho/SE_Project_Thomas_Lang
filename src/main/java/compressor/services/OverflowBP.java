@@ -1,15 +1,15 @@
 package compressor.services;
-
+import java.util.concurrent.atomic.AtomicInteger;
 import compressor.models.BitPacker;
 import org.javatuples.Triplet;
 
 public class OverflowBP implements BitPacker {
     private PerformanceTimer timer;
-
     public OverflowBP(String filePath) {
         //Initialisation of timer
-        if (filePath==null)this.timer= new PerformanceTimer(filePath,"Overflow");
+        if (filePath!=null)this.timer= new PerformanceTimer(filePath,"Overflow");
     }
+
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation
     public int[] compress(int[] array) {
@@ -28,10 +28,9 @@ public class OverflowBP implements BitPacker {
         //Size of the Overflow space
         int overflow_size=triplet.getValue2();
 
-        //Size of the new array
-        int new_array_size = triplet.getValue1()/32+overflow_size;
-
         String encoded_overflow_size=encodeEliasGamma(overflow_size+1);
+        //Size of the new array
+        int new_array_size = (triplet.getValue1()+1)/32+overflow_size;
         //Number of unused bits at the end of the compressed array (before the overflow area)
         int unused_bits=32-((((chunk_size+1)*array.length)+10+encoded_overflow_size.length())%32);
         int[] result = new int[new_array_size];
@@ -42,12 +41,17 @@ public class OverflowBP implements BitPacker {
         int result_cursor = 0; //points to the current treated Integer of the array
         int bit_cursor = 0; //points on the current bit
         int overflow_counter=0;
+
+
         //Loop that writes the bits onto the new array
         for (int i = 0; i < array.length; i++) {
             //The writing of the chunk size and unused_bits at the beginning of the first Integer for each Compressed Array
             if (i == 0 && bit_cursor == 0) {
                 result[result_cursor] = insert_bits_in_result(0,0,chunk_size,0,4) ;
                 result[result_cursor] = insert_bits_in_result(result[result_cursor],5,unused_bits,0,4);
+                if(overflow_size>0){
+                    int u=0;
+                }
 
                 int overflow_value=Integer.parseInt(encoded_overflow_size, 2);
                 int numBitsToInsert = encoded_overflow_size.length();
@@ -65,7 +69,7 @@ public class OverflowBP implements BitPacker {
 
             }
 
-            if(chunk_size<32-Integer.numberOfLeadingZeros(array[i])) {
+            if(chunk_size<(32-Integer.numberOfLeadingZeros(array[i]))) {
                 result[result_cursor] |= 1 << bit_cursor;
                 bit_cursor++;
                 if(bit_cursor==32) {
@@ -124,17 +128,16 @@ public class OverflowBP implements BitPacker {
         int chunk_size =extractBits(array[0],0,4);
         //Array size of the Array which will be returned
         int unused_bits =extractBits(array[0],5,9);
-        int overflow_size=decodeEliasGamma(array);
-        overflow_size--;
-        int array_length=((((array.length-overflow_size)*32)-10-unused_bits)/(chunk_size+1));
-
+        int overflow_size=Integer.parseInt(decodeEliasGamma(array),2)-1;
+        int overflow_encoded_length=(32-Integer.numberOfLeadingZeros(overflow_size))+1;
+        int array_length=((((array.length-(overflow_size))*32)-10-unused_bits-overflow_encoded_length)/(chunk_size+1));
         int[] result = new int[array_length];
 
         //Stop of Setup time taking
         if (timer!=null)timer.stop("Setup");
 
         int cursor_array = 0;
-        int bit_cursor = 10+(32-Integer.numberOfLeadingZeros(overflow_size+1))*2-1;
+        int bit_cursor = 10+((32-Integer.numberOfLeadingZeros(overflow_size+1))-1)*2+1;
 
         for (int i = 0; i < array_length; i++) {
             if (32-bit_cursor == 0) {
@@ -144,6 +147,10 @@ public class OverflowBP implements BitPacker {
 
             if(readBit(array,bit_cursor,cursor_array)==0) {
                 bit_cursor++;
+                if (32-bit_cursor == 0) {
+                    bit_cursor = 0;
+                    cursor_array++;
+                }
                 //Extraction of the Integer value
                 if (32 - bit_cursor < chunk_size) {
                     result[i]=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,bit_cursor+32-bit_cursor);
@@ -161,24 +168,32 @@ public class OverflowBP implements BitPacker {
                 }
             }else{
                 bit_cursor++;
-                int overflow_index;
+                if (32-bit_cursor == 0) {
+                    bit_cursor = 0;
+                    cursor_array++;
+                }
+                int overflow_index=0;
                 //Extraction of the Integer value
                 if (32 - bit_cursor < chunk_size) {
-                    overflow_index=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,bit_cursor+32-bit_cursor);
+                    overflow_index=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,31);
                     cursor_array++;
-                    overflow_index = insert_bits_in_result(overflow_index,32-bit_cursor,array[cursor_array],0,chunk_size-(33-bit_cursor)) ;
+                    overflow_index = insert_bits_in_result(overflow_index,32-bit_cursor,array[cursor_array],0,chunk_size-(31-bit_cursor)) ;
+
                     bit_cursor = chunk_size-(32-bit_cursor);
                 } else if (32 - bit_cursor == 0) {
                     bit_cursor = 0;
                     cursor_array++;
-                    overflow_index= extractBits(array[cursor_array] , bit_cursor,bit_cursor+chunk_size-1);
-                    bit_cursor += chunk_size;
+                    overflow_index= extractBits(0, bit_cursor,bit_cursor+chunk_size-1);
+                    bit_cursor+=chunk_size;
                 } else {
                    overflow_index= extractBits(array[cursor_array] , bit_cursor,bit_cursor+chunk_size-1);
+
                    bit_cursor += chunk_size;
                 }
-                overflow_index=array.length-overflow_index-1;
-                result[i]=array[overflow_index];
+                if(overflow_index>=0&&overflow_size!=0&&overflow_index<array.length) {
+                    overflow_index = array.length - overflow_index - 1;
+                    result[i] = array[overflow_index];
+                }
             }
         }
 
@@ -200,8 +215,7 @@ public class OverflowBP implements BitPacker {
         int chunk_size = extractBits(array[0],0,4);
         //Array size of the Array which will be returned
         int unused_bits =extractBits(array[0],5,9);
-        int overflow_size=decodeEliasGamma(array);
-        overflow_size--;
+        int overflow_size=Integer.parseInt(decodeEliasGamma(array),2)-1;
         int array_length=((((array.length-overflow_size)*32)-10-unused_bits)/chunk_size);
 
         //Test if the index is out of bounds
@@ -210,7 +224,7 @@ public class OverflowBP implements BitPacker {
             return -1;
         }
 
-        int bit_cursor = (10+(32-Integer.numberOfLeadingZeros(overflow_size+1))*2-1)+(chunk_size+1)*index;
+        int bit_cursor = (10+(31-Integer.numberOfLeadingZeros(overflow_size+1))*2+1)+(chunk_size+1)*index;
         int cursor_array = bit_cursor/32;
         bit_cursor = bit_cursor%32;
         int result;
@@ -276,7 +290,7 @@ public class OverflowBP implements BitPacker {
                 values_included += value_distribution[i];
                 int temp_overflow_size = array.length - values_included;
                 temp_overflow_size++;
-                int elias_gamma_overhead = (32 - Integer.numberOfLeadingZeros(temp_overflow_size)) * 2 - 1;
+                int elias_gamma_overhead = (31 - Integer.numberOfLeadingZeros(temp_overflow_size)) * 2 + 1;
                 int packed_data_bits = values_included * (i + 2);
                 int overflow_data_bits = (temp_overflow_size-1) * 32;
                 int metadata_bits = 10;
@@ -296,46 +310,58 @@ public class OverflowBP implements BitPacker {
     }
 
     public static String encodeEliasGamma(int value) {
-        String binary=Integer.toBinaryString(value);
-        int length=binary.length();
+        if (value <= 0) {
+            throw new IllegalArgumentException("Elias-Gamma is for positive integers.");
+        }
+        if(value>1){
+            int u=0;
+        }
+        String binaryValue = Integer.toBinaryString(value);
+        int length = binaryValue.length()-1;
 
-        StringBuilder prefix=new StringBuilder();
-        prefix.append("0".repeat(length - 1));
+        StringBuilder prefix = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            prefix.append('0');
+        }
 
-        return prefix.append(binary).toString();
+        return prefix.append(binaryValue).reverse().toString();
     }
 
-    public static int decodeEliasGamma(int[] array) {
+
+
+    public static String decodeEliasGamma(int[] array) {
         int k = 0;
-        int currentBitCursor = 10;
-        int currentArrayIndex = 0;
-        while (readBit(array, currentBitCursor, currentArrayIndex) == 0) {
+        int bit_cursor = 10;
+        int array_index = 0;
+        while (readBit(array, bit_cursor, array_index) == 0) {
             k++;
-            currentBitCursor++;
-            if (currentBitCursor >= 32) {
-                currentBitCursor = 0;
-                currentArrayIndex++;
+            bit_cursor++;
+            if (bit_cursor >= 32) {
+                bit_cursor=0;
+                array_index++;
             }
         }
-        int binaryLength = k + 1;
 
-        int value = 0;
-        for (int i = 0; i < binaryLength; i++) {
-            int bit = readBit(array, currentBitCursor, currentArrayIndex);
-            value |= bit << (binaryLength - 1 - i);
+        StringBuilder sb=new StringBuilder();
+        sb.append(1);
+        for (int i = 0; i < k; i++) {
+            int bit = readBit(array, bit_cursor, array_index);
+            sb.append(bit);
 
-            currentBitCursor++;
-            if (currentBitCursor >= 32) {
-                currentBitCursor = 0;
-                currentArrayIndex++;
+            bit_cursor++;
+            if (bit_cursor >= 32) {
+                bit_cursor=0;
+                bit_cursor++;
             }
         }
-        return value;
+
+        String result = sb.reverse().toString();
+        return result;
     }
 
     private static int readBit(int[] data, int bitCursor, int arrayIndex) {
         int currentInt = data[arrayIndex];
-        return (currentInt >> bitCursor) & 1;
+        return (currentInt >>> bitCursor) & 1;
     }
 
 }

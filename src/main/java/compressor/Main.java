@@ -8,8 +8,8 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
 
-        BitPacker bp= BitPackerFactory.createBitPacker("spanning","src/main/resources/performance_data.jsonl");
-        int[] uncompressed={100,200,300};
+        BitPacker bp= BitPackerFactory.createBitPacker("overflow","src/main/resources/performance_data.jsonl");
+        int[] uncompressed={906, 987, 313, 886, 89, 727, 614, 112, 922, 463, 757, 146, 369, 216, 292, 72, 217, 474, 799, 8, 168, 948, 394, 114, 970, 926, 761};
         System.out.println( toBinaryString(uncompressed));
         int[] compressed= bp.compress(uncompressed);
         System.out.println( toBinaryString(compressed));
