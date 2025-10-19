@@ -1,5 +1,4 @@
 package compressor.services;
-import java.util.concurrent.atomic.AtomicInteger;
 import compressor.models.BitPacker;
 import org.javatuples.Triplet;
 
@@ -13,7 +12,11 @@ public class OverflowBP implements BitPacker {
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation
     public int[] compress(int[] array) {
-
+        System.out.print("{");
+        for (int i = 0; i < array.length; i++) {
+            System.out.print(array[i]+",");
+        }
+        System.out.print("}");
         //Start of timetaking
         if(timer!=null)timer.start();
 
@@ -46,22 +49,20 @@ public class OverflowBP implements BitPacker {
         //Loop that writes the bits onto the new array
         for (int i = 0; i < array.length; i++) {
             //The writing of the chunk size and unused_bits at the beginning of the first Integer for each Compressed Array
-            if (i == 0 && bit_cursor == 0) {
+            if (i == 0 ) {
                 result[result_cursor] = insert_bits_in_result(0,0,chunk_size,0,4) ;
                 result[result_cursor] = insert_bits_in_result(result[result_cursor],5,unused_bits,0,4);
-                if(overflow_size>0){
-                    int u=0;
-                }
+
 
                 int overflow_value=Integer.parseInt(encoded_overflow_size, 2);
                 int numBitsToInsert = encoded_overflow_size.length();
 
-                if (numBitsToInsert>21){
-                    result[result_cursor]=insert_bits_in_result(result[result_cursor],10,overflow_value,0,numBitsToInsert-22);
+                if (numBitsToInsert>22){
+                    result[result_cursor]=insert_bits_in_result(result[result_cursor],10,overflow_value,0,21);
                     result_cursor++;
 
-                    result[result_cursor]=insert_bits_in_result(result[result_cursor],0,overflow_value,numBitsToInsert-21,numBitsToInsert);
-                    bit_cursor=numBitsToInsert-21;
+                    result[result_cursor]=insert_bits_in_result(result[result_cursor],0,overflow_value,22,numBitsToInsert);
+                    bit_cursor=numBitsToInsert-22;
                 }else{
                     result[result_cursor]= insert_bits_in_result(result[result_cursor],10,overflow_value,0,numBitsToInsert);
                     bit_cursor = 10+numBitsToInsert;
@@ -128,9 +129,10 @@ public class OverflowBP implements BitPacker {
         int chunk_size =extractBits(array[0],0,4);
         //Array size of the Array which will be returned
         int unused_bits =extractBits(array[0],5,9);
-        int overflow_size=Integer.parseInt(decodeEliasGamma(array),2)-1;
-        int overflow_encoded_length=(32-Integer.numberOfLeadingZeros(overflow_size))+1;
-        int array_length=((((array.length-(overflow_size))*32)-10-unused_bits-overflow_encoded_length)/(chunk_size+1));
+        String overflow_string=decodeEliasGamma(array);
+        int overflow_size=Integer.parseInt(overflow_string,2)-1;
+        int overflow_encoded_length=(overflow_string.length()-1)*2+1;
+        int array_length=((((array.length-overflow_size)*32)-(10+unused_bits+overflow_encoded_length))/(chunk_size+1));
         int[] result = new int[array_length];
 
         //Stop of Setup time taking
@@ -138,7 +140,10 @@ public class OverflowBP implements BitPacker {
 
         int cursor_array = 0;
         int bit_cursor = 10+((32-Integer.numberOfLeadingZeros(overflow_size+1))-1)*2+1;
-
+        if(bit_cursor>=32) {
+            bit_cursor=bit_cursor%32;
+            cursor_array++;
+        }
         for (int i = 0; i < array_length; i++) {
             if (32-bit_cursor == 0) {
              bit_cursor = 0;
@@ -172,12 +177,12 @@ public class OverflowBP implements BitPacker {
                     bit_cursor = 0;
                     cursor_array++;
                 }
-                int overflow_index=0;
+                int overflow_index;
                 //Extraction of the Integer value
                 if (32 - bit_cursor < chunk_size) {
                     overflow_index=insert_bits_in_result(0,0,array[cursor_array],bit_cursor,31);
                     cursor_array++;
-                    overflow_index = insert_bits_in_result(overflow_index,32-bit_cursor,array[cursor_array],0,chunk_size-(31-bit_cursor)) ;
+                    overflow_index = insert_bits_in_result(overflow_index,32-bit_cursor,array[cursor_array],0,chunk_size-(33-bit_cursor)) ;
 
                     bit_cursor = chunk_size-(32-bit_cursor);
                 } else if (32 - bit_cursor == 0) {
@@ -215,7 +220,8 @@ public class OverflowBP implements BitPacker {
         int chunk_size = extractBits(array[0],0,4);
         //Array size of the Array which will be returned
         int unused_bits =extractBits(array[0],5,9);
-        int overflow_size=Integer.parseInt(decodeEliasGamma(array),2)-1;
+        String overflow_string=decodeEliasGamma(array);
+        int overflow_size=Integer.parseInt(overflow_string,2)-1;
         int array_length=((((array.length-overflow_size)*32)-10-unused_bits)/chunk_size);
 
         //Test if the index is out of bounds
@@ -313,9 +319,7 @@ public class OverflowBP implements BitPacker {
         if (value <= 0) {
             throw new IllegalArgumentException("Elias-Gamma is for positive integers.");
         }
-        if(value>1){
-            int u=0;
-        }
+
         String binaryValue = Integer.toBinaryString(value);
         int length = binaryValue.length()-1;
 
@@ -343,8 +347,8 @@ public class OverflowBP implements BitPacker {
         }
 
         StringBuilder sb=new StringBuilder();
-        sb.append(1);
-        for (int i = 0; i < k; i++) {
+
+        for (int i = 0; i <= k; i++) {
             int bit = readBit(array, bit_cursor, array_index);
             sb.append(bit);
 
@@ -355,8 +359,7 @@ public class OverflowBP implements BitPacker {
             }
         }
 
-        String result = sb.reverse().toString();
-        return result;
+        return sb.toString();
     }
 
     private static int readBit(int[] data, int bitCursor, int arrayIndex) {
