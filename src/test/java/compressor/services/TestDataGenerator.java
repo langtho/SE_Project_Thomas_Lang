@@ -9,45 +9,53 @@ public class TestDataGenerator {
     private static final Random RANDOM = new Random();
 
     /**
-     * Generiert einen umfassenden Stream von Test-Arrays, der verschiedene Größen- und Wertebereiche abdeckt.
+     * Generates a comprehensive stream of test arrays, covering various sizes and value ranges.
      *
-     * @param tests_per_case Die Anzahl der Testfälle pro Kombination.
-     * @return Ein Stream von Arguments mit den zufälligen int-Arrays.
+     * @param tests_per_case The number of test cases per combination.
+     * @return A stream of Arguments with the random int arrays.
      */
     public static Stream<Arguments> generateAllTestCases(int tests_per_case) {
         // Defines the size ranges for the arrays
-        int[][] sizeRanges = {
-                {10, 50},       // Small
-                {50, 500},      // Small-Medium
-                {500, 1000},    // Medium
-                {1000, 5000},   // Medium-Large
-                {5000, 10000}   // Large
+        Object[][] sizeRanges = {
+                {"small_s",10, 50},       // Small
+                {"small_medium_s",50, 500},      // Small-Medium
+                {"medium_s",500, 1000},    // Medium
+                {"medium_large_s",1000, 5000},   // Medium-Large
+                {"large_s",5000, 10000}   // Large
         };
 
         // Defines the value ranges for the array elements
-        int[][] valueRanges = {
-                {0, 1000},                      // Small
-                {1000, 10000},                  // Small-Medium
-                {10000, 100000},                // Medium
-                {100000, 10000000},             // Medium-Large
-                {10000000, 200000000},          // Large
-                {0, Integer.MAX_VALUE}          // Mixed (full range)
+        Object[][] valueRanges = {
+                {"small_v",0, 1000},                      // Small
+                {"small_medium_v",1000, 10000},                  // Small-Medium
+                {"medium_v",10000, 100000},                // Medium
+                {"medium_large_v",100000, 10000000},             // Medium-Large
+                {"large_v",10000000, 200000000},          // Large
+                {"mixed_v",0, Integer.MAX_VALUE}          // Mixed (full range)
         };
 
         // Generate streams for each combination of size and value ranges
         Stream<Arguments> combinedStream = Stream.empty();
-        for (int[] sizeRange : sizeRanges) {
-            for (int[] valueRange : valueRanges) {
-                combinedStream = Stream.concat(combinedStream, createArrayStream(tests_per_case, sizeRange, valueRange));
+        for (Object[] sizeRange : sizeRanges) {
+            String sizeLabel =(String) sizeRange[0];
+            int sizeMin = (int) sizeRange[1];
+            int sizeMax = (int) sizeRange[2];
+            int[] sizes={sizeMin, sizeMax};
+
+            for (Object[] valueRange : valueRanges) {
+                String valueLabel =(String) valueRange[0];
+                int valueMin = (int) valueRange[1];
+                int valueMax = (int) valueRange[2];
+                int[] values = {valueMin, valueMax};
+
+                combinedStream = Stream.concat(combinedStream, createArrayStream(tests_per_case, sizes, values,sizeLabel,valueLabel));
             }
         }
         return combinedStream;
     }
 
-    /**
-     * Hilfsmethode zur Erstellung eines Streams von zufälligen int-Arrays.
-     */
-    private static Stream<Arguments> createArrayStream(int count, int[] sizeRange, int[] valueRange) {
+
+    private static Stream<Arguments> createArrayStream(int count, int[] sizeRange, int[] valueRange,String sizeLabel,String valueLabel) {
         if (count <= 0) {
             return Stream.empty();
         }
@@ -64,7 +72,7 @@ public class TestDataGenerator {
                     }
                 }
             }
-            return Arguments.of((Object) randomArray);
+            return Arguments.of(sizeLabel,valueLabel,(Object) randomArray);
         }).limit(count);
     }
 }

@@ -28,12 +28,13 @@ public class PerformanceTimer {
         this.startTime = System.nanoTime();
     }
 
-    public void saveToJson(String functionName,int uncompressed_array_size, int compressed_array_size) {
+    public void saveToJson(String functionName,int uncompressed_array_size, int compressed_array_size, String sizeLabel,String valueLabel) {
         this.currentTimetaking.setFunctionType(functionName);
         this.currentTimetaking.setUncompressedArraySize(uncompressed_array_size);
         this.currentTimetaking.setCompressedArraySize(compressed_array_size);
         this.currentTimetaking.calculateFullDuration();
-
+        this.currentTimetaking.setValueSize(valueLabel);
+        this.currentTimetaking.setArraySize(sizeLabel);
 
 
         try(FileWriter writer = new FileWriter(filePath,true)){

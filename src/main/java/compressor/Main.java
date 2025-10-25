@@ -9,16 +9,16 @@ public class Main {
     public static void main(String[] args) {
 
         BitPacker bp= BitPackerFactory.createBitPacker("overflow","src/main/resources/performance_data.jsonl");
-        int[] uncompressed={1682227400,1574455182,780798573,1893877122,901058016,1467978036,1622447264,106847633,2086870668,916247900,826303942,1028706322,282421831,342889249,348583170,1350376317,1746067240,1582537669,569419671,884201564,1974167380,619846862,736734564,1730295098,201530116,2021124683,2095966972,1798307771,1754941743,1136618293,2011900774,2025057477,1128603860,89434608,112358254,449769948,2003330278,799681265,}
-                ;
+        int[] uncompressed= {7593367,7245211,4414597,3844844,8194264,4219745,2619918,7021131,5938951,7248717,6876141,1880487,2074039,7451013,8627047,8703540,1301102,5213615,4752811,5202740,6365437,1408660,7170993,5037801,8159297,6842956,4030845,2856904,1629606,7340299,5046403,4998855,8949420,771261,4954633,4717224,904903,8164897,6419365,1081033,6370981,2735821};
         System.out.println( toBinaryString(uncompressed));
-        int[] compressed= bp.compress(uncompressed);
+        assert bp != null;
+        int[] compressed= bp.compress(uncompressed,"custom","custom");
         System.out.println( toBinaryString(compressed));
         System.out.println(Arrays.toString(compressed));
-        System.out.println(bp.get(0,compressed));
-        System.out.println(bp.get(1,compressed));
-        System.out.println(bp.get(2,compressed));
-        int[] reuncompressed= bp.decompress(compressed);
+        System.out.println(bp.get(0,compressed,"custom","custom"));
+        System.out.println(bp.get(1,compressed,"custom","custom"));
+        System.out.println(bp.get(2,compressed,"custom","custom"));
+        int[] reuncompressed= bp.decompress(compressed,"custom","custom");
         System.out.println(Arrays.toString(reuncompressed));
     }
 

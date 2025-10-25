@@ -1,14 +1,13 @@
 package compressor.models;
 
-import compressor.services.PerformanceTimer;
 
 public interface BitPacker {
 
-    int[] compress(int[] array);
+    int[] compress(int[] array, String sizeLabel,String valueLabel);
 
-    int[] decompress(int[] array);
+    int[] decompress(int[] array, String sizeLabel,String valueLabel);
 
-    int get(int index, int[] array);
+    int get(int index, int[] array, String sizeLabel,String valueLabel);
 
     //GET_NUMBER_OF_BITS_NEEDED function: Input: Array of Integers Output: Integer
     //Returns an Integer of how many bits needed to represent the most of the Input Array

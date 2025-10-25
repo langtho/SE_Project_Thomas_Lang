@@ -11,12 +11,8 @@ public class OverflowBP implements BitPacker {
 
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation
-    public int[] compress(int[] array) {
-        System.out.print("{");
-        for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i]+",");
-        }
-        System.out.print("}");
+    public int[] compress(int[] array, String sizeLabel,String valueLabel) {
+
         //Start of timetaking
         if(timer!=null)timer.start();
 
@@ -33,7 +29,8 @@ public class OverflowBP implements BitPacker {
 
         String encoded_overflow_size=encodeEliasGamma(overflow_size+1);
         //Size of the new array
-        int new_array_size = (triplet.getValue1()+1)/32+overflow_size;
+        int new_array_size = (triplet.getValue1())/32+overflow_size;
+
         //Number of unused bits at the end of the compressed array (before the overflow area)
         int unused_bits=32-((((chunk_size+1)*array.length)+10+encoded_overflow_size.length())%32);
         int[] result = new int[new_array_size];
@@ -113,13 +110,13 @@ public class OverflowBP implements BitPacker {
         //Stop of timetaking of writing on the compressed array
         if(timer!=null){
             timer.stop("Compressing");
-            timer.saveToJson("Compress",array.length,result.length);
+            timer.saveToJson("Compress",array.length,result.length,  sizeLabel, valueLabel);
         }
 
         return result;
     }
 
-    public int[] decompress(int[] array) {
+    public int[] decompress(int[] array, String sizeLabel,String valueLabel) {
 
         //Start of timetaking
         if(timer!=null)timer.start();
@@ -205,13 +202,13 @@ public class OverflowBP implements BitPacker {
         //Stop of timetaking of writing on the decompressed array
         if(timer!=null){
             timer.stop("Decompressing");
-            timer.saveToJson("Decompress",result.length,array.length);
+            timer.saveToJson("Decompress",result.length,array.length,  sizeLabel, valueLabel);
         }
 
         return result;
     }
 
-    public int get(int index, int[] array){
+    public int get(int index, int[] array, String sizeLabel,String valueLabel){
         //Start of timetaking
         if(timer!=null)timer.start();
 
@@ -272,7 +269,7 @@ public class OverflowBP implements BitPacker {
         //Stop timetaking
         if(timer!=null){
             timer.stop("get");
-            timer.saveToJson("get",array_length,array.length);
+            timer.saveToJson("get",array_length,array.length,  sizeLabel, valueLabel);
         }
         return result;
     }
@@ -292,12 +289,13 @@ public class OverflowBP implements BitPacker {
         int overflow_size=0;
         int size_for_smallest_chunk=array.length*32+33;
         for (int i=0; i<32; i++) {
+
             if(value_distribution[i]!=0) {
                 values_included += value_distribution[i];
                 int temp_overflow_size = array.length - values_included;
                 temp_overflow_size++;
                 int elias_gamma_overhead = (31 - Integer.numberOfLeadingZeros(temp_overflow_size)) * 2 + 1;
-                int packed_data_bits = values_included * (i + 2);
+                int packed_data_bits = array.length * (i + 2);
                 int overflow_data_bits = (temp_overflow_size-1) * 32;
                 int metadata_bits = 10;
 

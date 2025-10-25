@@ -12,7 +12,7 @@ public class NonSpanningBP implements BitPacker {
 
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
     //It compresses an array of integers to a smaller Array of Integers using bit manipulation 
-    public int[] compress(int[] array) {
+    public int[] compress(int[] array, String sizeLabel,String valueLabel) {
         //Start of timetaking
         if(timer!=null)timer.start();
 
@@ -70,7 +70,7 @@ public class NonSpanningBP implements BitPacker {
         //Stop of timetaking of writing on the compressed array
         if(timer!=null){
             timer.stop("Compressing");
-            timer.saveToJson("Compress",array.length,result.length);
+            timer.saveToJson("Compress",array.length,result.length, sizeLabel,valueLabel);
         }
 
         return result;
@@ -78,7 +78,7 @@ public class NonSpanningBP implements BitPacker {
 
 
 
-    public int[] decompress(int[] array) {
+    public int[] decompress(int[] array, String sizeLabel,String valueLabel) {
 
         //Start of timetaking
         if(timer!=null)timer.start();
@@ -120,7 +120,7 @@ public class NonSpanningBP implements BitPacker {
         //Stop of timetaking of writing on the decompressed array
         if(timer!=null){
             timer.stop("Decompressing");
-            timer.saveToJson("Decompress",result.length,array.length);
+            timer.saveToJson("Decompress",result.length,array.length,  sizeLabel, valueLabel);
         }
 
         return result;
@@ -128,7 +128,7 @@ public class NonSpanningBP implements BitPacker {
 
 
 
-    public int get(int index, int[] array) {
+    public int get(int index, int[] array, String sizeLabel,String valueLabel) {
         //Start of timetaking
         if(timer!=null)timer.start();
 
@@ -157,7 +157,7 @@ public class NonSpanningBP implements BitPacker {
         //Stop timetaking
         if(timer!=null){
             timer.stop("get");
-            timer.saveToJson("get",decompressed_array_size,array.length);
+            timer.saveToJson("get",decompressed_array_size,array.length, sizeLabel,valueLabel);
         }
         return result;
 

@@ -5,14 +5,12 @@ import java.util.List;
 public class PerformanceData {
     private String compressionType;
     private String functionType;
+    private String arraySize;
+    private String valueSize;
     private int uncompressedArraySize;
     private int compressedArraySize;
     private List<Measurement> parts;
     private long fulldurationNanos;
-
-    public PerformanceData() {
-        this.parts = new ArrayList<>();
-    }
 
     public PerformanceData(String compressionType){
         this.compressionType = compressionType;
@@ -78,4 +76,10 @@ public class PerformanceData {
     public void setFullDurationNanos(long fullDurationNanos) {
         this.fulldurationNanos = fullDurationNanos;
     }
+
+    public void setArraySize(String arraySize) {this.arraySize=arraySize;}
+    public String getArraySize() {return arraySize;}
+
+    public void setValueSize(String valueSize) {this.valueSize=valueSize;}
+    public String getValueSize() {return valueSize;}
 }
