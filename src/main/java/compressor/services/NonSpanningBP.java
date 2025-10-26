@@ -2,10 +2,12 @@ package compressor.services;
 
 import compressor.models.BitPacker;
 
+import java.io.File;
+
 public class NonSpanningBP implements BitPacker {
     public PerformanceTimer timer=null;
 
-    public NonSpanningBP(String filePath) {
+    public NonSpanningBP(File filePath) {
         //Initialisation of timer
         if(filePath!=null) this.timer = new PerformanceTimer(filePath,"NonSpanning");
     }

@@ -2,8 +2,10 @@ package compressor.models;
 
 import compressor.services.*;
 
+import java.io.File;
+
 public class BitPackerFactory {
-    public static BitPacker createBitPacker(String type, String json_file) {
+    public static BitPacker createBitPacker(String type, File json_file) {
         if(json_file != null) {
             return switch (type) {
                 case "spanning" -> new SpanningBP(json_file);

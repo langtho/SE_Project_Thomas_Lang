@@ -1,20 +1,30 @@
 package compressor.services;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class PerformanceTimer {
+    private static PerformanceTimer instance;
+
     private long startTime;
     private final ObjectMapper mapper;
-    private final String filePath;
+    private final File file;
     private PerformanceData currentTimetaking;
 
-    public PerformanceTimer(String filePath,String compressionType){
-        this.filePath = filePath;
+    public PerformanceTimer(File filePath, String compressionType){
+        this.file = filePath;
         this.mapper = new ObjectMapper();
         this.mapper.disable(SerializationFeature.INDENT_OUTPUT);
         this.currentTimetaking = new PerformanceData(compressionType);
+    }
+
+    public static PerformanceTimer getInstance(File file,String compressionType){
+        if(instance == null){
+            instance = new PerformanceTimer(file,compressionType);
+        }
+        return instance;
     }
 
     public void start() {
@@ -37,7 +47,7 @@ public class PerformanceTimer {
         this.currentTimetaking.setArraySize(sizeLabel);
 
 
-        try(FileWriter writer = new FileWriter(filePath,true)){
+        try(FileWriter writer = new FileWriter(file,true)){
             String jsonLine = mapper.writeValueAsString(this.currentTimetaking);
             writer.write(jsonLine+"\n");
         } catch (IOException e) {

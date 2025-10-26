@@ -3,6 +3,8 @@ package compressor.services;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.io.File;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,7 +13,7 @@ import java.util.Random;
 
 class BitPackerTest {
 
-    String jsonFile="src/main/resources/performance_data.jsonl";
+    File jsonFile=new File("src/main/resources/performance_data.jsonl");
     private static final int tests_per_case = 100;
     private static final Random RANDOM = new Random();
 

@@ -2,9 +2,11 @@ package compressor.services;
 import compressor.models.BitPacker;
 import org.javatuples.Triplet;
 
+import java.io.File;
+
 public class OverflowBP implements BitPacker {
     private PerformanceTimer timer;
-    public OverflowBP(String filePath) {
+    public OverflowBP(File filePath) {
         //Initialisation of timer
         if (filePath!=null)this.timer= new PerformanceTimer(filePath,"Overflow");
     }

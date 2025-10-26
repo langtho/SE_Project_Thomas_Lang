@@ -2,11 +2,13 @@ package compressor.services;
 
 import compressor.models.BitPacker;
 
+import java.io.File;
+
 public class SpanningBP implements BitPacker {
 
     public PerformanceTimer timer=null;
 
-    public SpanningBP(String filePath) {
+    public SpanningBP(File filePath) {
         //Initialisation of timer
         if(filePath!=null) this.timer = new PerformanceTimer(filePath,"Spanning");
     }
