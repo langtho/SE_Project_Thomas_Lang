@@ -22,7 +22,7 @@ public class Main {
         File sourceFile = new File(args[2]);
         File destinationFile = new File(args[3]);
 
-        BitPacker bp= BitPackerFactory.createBitPacker("overflow",File("src/main/resources/performance_data.jsonl"));
+        BitPacker bp= BitPackerFactory.createBitPacker("overflow",new File("src/main/resources/performance_data.jsonl"));
         int[] uncompressed= {7593367,7245211,4414597,3844844,8194264,4219745,2619918,7021131,5938951,7248717,6876141,1880487,2074039,7451013,8627047,8703540,1301102,5213615,4752811,5202740,6365437,1408660,7170993,5037801,8159297,6842956,4030845,2856904,1629606,7340299,5046403,4998855,8949420,771261,4954633,4717224,904903,8164897,6419365,1081033,6370981,2735821};
         System.out.println( toBinaryString(uncompressed));
         assert bp != null;
