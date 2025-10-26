@@ -1,7 +1,10 @@
 package compressor.services;
 
+import compressor.logger.Logger;
+import compressor.logger.LoggerFactory;
 import compressor.models.BitPacker;
 import compressor.models.BitPackerFactory;
+import compressor.logger.LogLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +15,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.stream.Collectors;
-import java.util.Arrays; // Import fuer Arrays.stream
+import java.util.Arrays;
 
 public class APIController {
 
@@ -22,18 +24,18 @@ public class APIController {
     private File destinationFile;
     private String compressionType;
     private String method;
-    private Integer getIndex = null;
-    private String loggingTypeArgument = null;
-    private File performanceLogFile = null; // Changed type to File for consistency
+    private Integer getIndex = null; // Index requested for 'get' method
+    private String loggingTypeArgument = null; // Value passed after the --logging flag
+    private File performanceLogFile = null; // File path passed after the --performancelogging flag
     private BitPacker bitPacker;
+    private Logger logger; // The logger instance
 
-    // Regular Expression to split the text by any whitespace (spaces, tabs, newlines)
+    // Pattern to split text by any whitespace
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
 
-    // Use explicit public modifier
     public APIController(ArrayList<String> args) {
 
-        // --- 1. Check and Assign Positional Arguments ---
+        // 1. Assign Obligatory Positional Arguments
         if (args.size() < 4) {
             throw new IllegalArgumentException("At least 4 arguments (Type, Method, Source, Dest) are required.");
         }
@@ -43,34 +45,30 @@ public class APIController {
         this.sourceFile = new File(args.get(2));
         this.destinationFile = new File(args.get(3));
 
-        int currentArgIndex = 4; // Start parsing optional arguments from Index 4
+        int currentArgIndex = 4; // Start index for optional arguments
 
-        // --- 2. Special Case: 'get' Method and Detail Level ---
+        // 2. Handle 'get' Method Specific Argument (Detail Level)
         if (this.method.equalsIgnoreCase("get")) {
-
-            // Check if the 5th argument (Index 4) is present and is not a flag
+            // Check if the 5th argument is present and is not a flag
             if (args.size() <= currentArgIndex || args.get(currentArgIndex).startsWith("--")) {
                 throw new IllegalArgumentException("'get' method requires a detail level (int) as the 5th argument.");
             }
 
-            String getIndexStr = args.get(currentArgIndex);
-
-            // Use try-catch logic to validate the number
             try {
-                this.getIndex = Integer.parseInt(getIndexStr);
+                this.getIndex = Integer.parseInt(args.get(currentArgIndex));
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("The detail level must be a valid integer: " + getIndexStr);
+                throw new IllegalArgumentException("The detail level must be a valid integer: " + args.get(currentArgIndex));
             }
 
-            currentArgIndex++; // Move to the 6th argument (Index 5), where flags begin
+            currentArgIndex++; // Move past the detail level argument
         }
 
-        // --- 3. Optional Flag Parsing (from currentArgIndex onwards) ---
+        // 3. Process Optional Flags (--logging and --performancelogging)
         while (currentArgIndex < args.size()) {
             String currentArg = args.get(currentArgIndex);
 
             if (currentArg.equals("--logging")) {
-                // Expect a value as the next argument
+                // Process the value associated with the --logging flag
                 if (currentArgIndex + 1 >= args.size() || args.get(currentArgIndex + 1).startsWith("--")) {
                     throw new IllegalArgumentException("The flag '--logging' requires a value (e.g., verbose) as the next argument.");
                 }
@@ -78,11 +76,10 @@ public class APIController {
                 currentArgIndex += 2; // Skip both the flag and its value
 
             } else if (currentArg.equals("--performancelogging")) {
-                // Expect a file path as the next argument
+                // Process the file path associated with the --performancelogging flag
                 if (currentArgIndex + 1 >= args.size() || args.get(currentArgIndex + 1).startsWith("--")) {
                     throw new IllegalArgumentException("The flag '--performancelogging' requires a file path as the next argument.");
                 }
-                // Store the path as a File object
                 this.performanceLogFile = new File(args.get(currentArgIndex + 1));
                 currentArgIndex += 2; // Skip both the flag and its value
 
@@ -93,102 +90,106 @@ public class APIController {
             }
         }
 
-        // --- 4. BitPacker Creation (Factory Method) ---
-        // Assume BitPackerFactory has a static 'createBitPacker' method.
+        // 4. Create Logger and BitPacker instances
+        this.logger = LoggerFactory.createLogger(
+                this.loggingTypeArgument != null ? this.loggingTypeArgument : "NONE"
+        );
+        this.logger.log(LogLevel.INFO, "APIController initialization started.");
+
         try {
-            // NOTE: The signature must match your Factory's method
-            this.bitPacker = BitPackerFactory.createBitPacker(this.compressionType, this.performanceLogFile);
+            // Inject the Logger into the BitPacker Factory
+            this.bitPacker = BitPackerFactory.createBitPacker(this.compressionType, this.performanceLogFile, this.logger);
+            this.logger.log(LogLevel.INFO, "BitPacker created successfully.");
         } catch (Exception e) {
-            // Wrap factory exceptions for better context
+            this.logger.log(LogLevel.WARNING, "Error creating BitPacker: " + e.getMessage());
             throw new RuntimeException("Error creating BitPacker: " + e.getMessage(), e);
         }
 
-        System.out.println("APIController initialized. Logging Type Argument: " + this.loggingTypeArgument);
+        this.logger.log(LogLevel.INFO, "APIController initialized successfully. Method: " + this.method + ", Type: " + this.compressionType);
     }
 
     // --- Core Execution Method ---
     public void run() throws IOException {
-        int[] resultData=null;
-        int getresult=-1;
-        // Extrahieren der Quelldaten einmal
+        int[] resultData = null;
+        int getResult = -1;
+
+        this.logger.log(LogLevel.INFO, "Starting execution of method: " + this.method.toUpperCase());
+
         int[] sourceData = extractIntArray(sourceFile);
 
         switch (this.method.toLowerCase()) {
             case "compress":
-                // Annahme: bitPacker.compress akzeptiert int[] und File (log)
-                resultData = bitPacker.compress(sourceData, "custom","custom");
+                this.logger.log(LogLevel.DEBUG, "Calling BitPacker compress for " + sourceData.length + " items.");
+                resultData = bitPacker.compress(sourceData,"custom","custom");
+                this.logger.log(LogLevel.INFO, "Compression finished.");
                 break;
 
             case "decompress":
-                // Annahme: bitPacker.decompress akzeptiert int[] (komprimierte Daten) und File (log)
-                resultData = bitPacker.decompress(sourceData, "custom","custom");
+                this.logger.log(LogLevel.DEBUG, "Calling BitPacker decompress for " + sourceData.length + " items.");
+                resultData = bitPacker.decompress(sourceData,"custom","custom");
+                this.logger.log(LogLevel.INFO, "Decompression finished.");
                 break;
+
             case "get":
-                // Annahme: bitPacker.get akzeptiert Index, int[] und File (log)
+                this.logger.log(LogLevel.DEBUG, "Calling BitPacker get for index: " + this.getIndex);
                 if (this.getIndex == null) {
+                    this.logger.log(LogLevel.WARNING, "Get index was not set.");
                     throw new IllegalStateException("Get index was not properly set during initialization.");
                 }
-                getresult = bitPacker.get(this.getIndex, sourceData, "custom","custom");
+                getResult = bitPacker.get(this.getIndex, sourceData,"custom","custom");
+                this.logger.log(LogLevel.INFO, "Get operation finished. Value: " + getResult);
+
+                // Wrap single int result into an array for file writing
+                resultData = new int[]{getResult};
                 break;
+
             default:
+                this.logger.log(LogLevel.WARNING, "Unknown method encountered: " + this.method);
                 throw new IllegalArgumentException("Unknown method: " + this.method);
         }
 
-        // Schreibe das Ergebnis in die Zieldatei
-        if(resultData==null) {
-            System.out.println("The value at Index "+getIndex+" is: "+getresult);
-            resultData=new int[]{getresult};
-        }
+        // Write the final result data to the destination file
         writeIntArray(resultData, destinationFile);
+        this.logger.log(LogLevel.INFO, "Operation finished. Result written to " + destinationFile.getName());
     }
 
     // --- Utility Methods ---
 
-    /**
-     * Extracts an array of integers from a source file.
-     * Assumes the file contains numbers separated by whitespace.
-     */
-    public int[] extractIntArray(File sourceFile) throws IOException, NumberFormatException {
+    /** Extracts an array of integers from a source file (whitespace separated). */
+    public static int[] extractIntArray(File sourceFile) throws IOException, NumberFormatException {
 
         System.out.println("Reading integers from file: " + sourceFile.getAbsolutePath());
 
-        // Read the entire file content into a single string.
         String content = Files.readString(Paths.get(sourceFile.getPath()));
 
         if (content.trim().isEmpty()) {
             return new int[0];
         }
 
-        // CORRECTED: Use Pattern to split the content string into number strings
         String[] numberStrings = WHITESPACE_PATTERN.split(content.trim());
 
-        // Use Java Streams to efficiently map and filter
+        // Use Streams to filter empty strings and convert valid ones to integers
         return Arrays.stream(numberStrings)
-                .filter(s -> !s.trim().isEmpty()) // Filter out any empty strings resulting from splitting
+                .filter(s -> !s.trim().isEmpty())
                 .mapToInt(Integer::parseInt)
                 .toArray();
     }
 
-    /**
-     * Writes an array of integers to a destination file, with each integer on a new line.
-     */
-    public void writeIntArray(int[] dataArray, File destinationFile) throws IOException {
+    /** Writes an array of integers to a destination file, with each integer on a new line. */
+    public static void writeIntArray(int[] dataArray, File destinationFile) throws IOException {
 
         System.out.println("Writing " + dataArray.length + " integers to file: " + destinationFile.getAbsolutePath());
 
-        // Use try-with-resources to ensure the BufferedWriter is always closed.
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(destinationFile))) {
 
             for (int value : dataArray) {
-                // Convert the integer to a String and write to file
                 writer.write(String.valueOf(value));
-                writer.newLine(); // Write a newline character
+                writer.newLine(); // Write a newline character for separation
             }
 
             System.out.println("✅ Successfully wrote integer array to file.");
 
         } catch (IOException e) {
-            // Re-throw the IOException with a more detailed message
             throw new IOException("Failed to write array to file: " + destinationFile.getAbsolutePath(), e);
         }
     }

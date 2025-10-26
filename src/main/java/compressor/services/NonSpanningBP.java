@@ -1,22 +1,32 @@
 package compressor.services;
 
+import compressor.logger.Logger;
 import compressor.models.BitPacker;
+import compressor.timetaking.PerformanceTimer;
+import compressor.logger.LogLevel;
 
 import java.io.File;
 
 public class NonSpanningBP implements BitPacker {
     public PerformanceTimer timer=null;
-
-    public NonSpanningBP(File filePath) {
+    private Logger logger;
+    public NonSpanningBP(File filePath,Logger log) {
+        logger = log;
         //Initialisation of timer
-        if(filePath!=null) this.timer = new PerformanceTimer(filePath,"NonSpanning");
+        if(filePath!=null) {
+            this.timer = new PerformanceTimer(filePath,"NonSpanning");
+            this.logger.log(LogLevel.INFO, "PerformanceTimer initialized for NonSpanningBP."); // NEU: Logger-Aufruf
+        } else {
+            this.logger.log(LogLevel.DEBUG, "PerformanceTimer disabled (filePath is null)."); // NEU: Logger-Aufruf
+        }
     }
 
     //COMPRESS  function: Input: An Array of Integers Output: An Array of Integers
-    //It compresses an array of integers to a smaller Array of Integers using bit manipulation 
+    //It compresses an array of integers to a smaller Array of Integers using bit manipulation
     public int[] compress(int[] array, String sizeLabel,String valueLabel) {
         //Start of timetaking
         if(timer!=null)timer.start();
+        this.logger.log(LogLevel.DEBUG, "Starting compress operation.");
 
         if(array.length == 0) return new int[0];
         //The sum of all bits needed to represent all Integers of the Array
@@ -24,6 +34,7 @@ public class NonSpanningBP implements BitPacker {
 
         //Take time of the bit-needed function
         if(timer!=null)timer.stop("BitNeeded");
+        this.logger.log(LogLevel.DEBUG, "BitNeeded calculation finished.");
 
         //The size of a chunk of data needed
         int chunk_size = bits_needed / array.length;
@@ -40,6 +51,7 @@ public class NonSpanningBP implements BitPacker {
 
         //Take time of the bit-needed function
         if(timer!=null)timer.stop("Setup");
+        this.logger.log(LogLevel.DEBUG, "Compression setup complete. Chunk size: " + chunk_size);
 
         //Part that writes the bits onto the new array
         int array_cursor = 0; //points to the current treated Integer of the array
@@ -74,7 +86,7 @@ public class NonSpanningBP implements BitPacker {
             timer.stop("Compressing");
             timer.saveToJson("Compress",array.length,result.length, sizeLabel,valueLabel);
         }
-
+        this.logger.log(LogLevel.INFO, "Compression completed. Result size: " + result.length); // NEU: Logger-Aufruf
         return result;
     }
 
@@ -84,6 +96,7 @@ public class NonSpanningBP implements BitPacker {
 
         //Start of timetaking
         if(timer!=null)timer.start();
+        this.logger.log(LogLevel.DEBUG, "Starting decompress operation.");
 
         if(array.length == 0) return new int[0];
         //Extraction of the size of a chunk of data needed
@@ -96,6 +109,7 @@ public class NonSpanningBP implements BitPacker {
 
         //Stop of Setup time taking
         timer.stop("Setup");
+        this.logger.log(LogLevel.DEBUG, "Decompression setup complete. Expected result size: " + decompressed_array_size);
 
         int cursor_result=0;
         for (int i = 0; i < array.length; i++) {
@@ -124,7 +138,7 @@ public class NonSpanningBP implements BitPacker {
             timer.stop("Decompressing");
             timer.saveToJson("Decompress",result.length,array.length,  sizeLabel, valueLabel);
         }
-
+        this.logger.log(LogLevel.INFO, "Decompression finished. Result size: " + result.length);
         return result;
     }
 
@@ -133,6 +147,7 @@ public class NonSpanningBP implements BitPacker {
     public int get(int index, int[] array, String sizeLabel,String valueLabel) {
         //Start of timetaking
         if(timer!=null)timer.start();
+        this.logger.log(LogLevel.DEBUG, "Starting get operation for index: " + index);
 
         //Extraction of the size of a chunk of data needed
         int chunk_size =extractBits(array[0],0,4);
@@ -143,6 +158,7 @@ public class NonSpanningBP implements BitPacker {
 
         //Test if the index is out of bounds
         if(index<0||index>=decompressed_array_size){
+            this.logger.log(LogLevel.WARNING, "Index " + index + " is out of bounds (Max: " + (decompressed_array_size - 1) + ")");
             System.err.println("index out of bounds");
             return -1;
         }
@@ -161,6 +177,7 @@ public class NonSpanningBP implements BitPacker {
             timer.stop("get");
             timer.saveToJson("get",decompressed_array_size,array.length, sizeLabel,valueLabel);
         }
+        this.logger.log(LogLevel.INFO, "Get operation successful. Retrieved value: " + result);
         return result;
 
     }

@@ -1,56 +1,43 @@
 package compressor;
 
-import compressor.models.BitPacker;
-import compressor.models.BitPackerFactory;
+import compressor.services.APIController;
 
-import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
+        // 1. Check for minimum required arguments (4, as determined by APIController)
         if (args.length < 4) {
-            System.err.println("Usage: java Main <file>");
+            // Updated usage message to reflect expected arguments
+            System.err.println("Usage: java Main <type> <method> <sourceFile> <destinationFile> [optional_flags...]");
             return;
         }
 
-        List<String> argList =Arrays.asList(args);
+        try {
+            // 2. Convert the args array to a List<String>
+            List<String> argList = Arrays.asList(args);
+            // 3. Instantiate the APIController using the List
+            APIController controller = new APIController((ArrayList<String>) argList);
+            // 4. Execute the command
+            controller.run();
 
-        String method=argList.get(0).toLowerCase();
-        String compressionType = args[1].toLowerCase();
-        File sourceFile = new File(args[2]);
-        File destinationFile = new File(args[3]);
-
-        BitPacker bp= BitPackerFactory.createBitPacker("overflow",new File("src/main/resources/performance_data.jsonl"));
-        int[] uncompressed= {7593367,7245211,4414597,3844844,8194264,4219745,2619918,7021131,5938951,7248717,6876141,1880487,2074039,7451013,8627047,8703540,1301102,5213615,4752811,5202740,6365437,1408660,7170993,5037801,8159297,6842956,4030845,2856904,1629606,7340299,5046403,4998855,8949420,771261,4954633,4717224,904903,8164897,6419365,1081033,6370981,2735821};
-        System.out.println( toBinaryString(uncompressed));
-        assert bp != null;
-        int[] compressed= bp.compress(uncompressed,"custom","custom");
-        System.out.println( toBinaryString(compressed));
-        System.out.println(Arrays.toString(compressed));
-        System.out.println(bp.get(0,compressed,"custom","custom"));
-        System.out.println(bp.get(1,compressed,"custom","custom"));
-        System.out.println(bp.get(2,compressed,"custom","custom"));
-        int[] reuncompressed= bp.decompress(compressed,"custom","custom");
-        System.out.println(Arrays.toString(reuncompressed));
-    }
-
-
-        public static String toBinaryString(int[] array) {
-            StringBuilder sb = new StringBuilder();
-            for (int j : array) {
-                // Konvertiert den Integer zu einem Binärstring
-                String binaryString = Integer.toBinaryString(j);
-
-                // Fügt führende Nullen hinzu, um auf 32 Bits aufzufüllen
-                String paddedString = String.format("%32s", binaryString).replace(' ', '0');
-
-                sb.append(paddedString);
-                sb.append("\n");
-            }
-            return sb.toString();
+        } catch (IllegalArgumentException e) {
+            // Catch configuration errors (e.g., bad detail level, missing flags)
+            System.err.println("CONFIGURATION ERROR: " + e.getMessage());
+        } catch (IOException e) {
+            // Catch file I/O errors from the run() method
+            System.err.println("I/O ERROR: Failed during file processing: " + e.getMessage());
+        } catch (IllegalStateException e) {
+            // Catch state errors (e.g., get index missing)
+            System.err.println("EXECUTION ERROR: " + e.getMessage());
+        } catch (Exception e) {
+            // Catch any unexpected runtime exceptions
+            System.err.println("UNEXPECTED ERROR: " + e.getClass().getName() + ": " + e.getMessage());
         }
-
+    }
 }
 

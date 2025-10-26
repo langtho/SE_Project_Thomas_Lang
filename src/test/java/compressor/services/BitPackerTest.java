@@ -1,5 +1,6 @@
 package compressor.services;
 
+import compressor.logger.LoggerFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -17,9 +18,9 @@ class BitPackerTest {
     private static final int tests_per_case = 100;
     private static final Random RANDOM = new Random();
 
-    private final SpanningBP spanningBP=new SpanningBP(jsonFile);
-    private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile);
-    private final OverflowBP overflow=new OverflowBP(jsonFile);
+    private final SpanningBP spanningBP=new SpanningBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
+    private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
+    private final OverflowBP overflow=new OverflowBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
 
 
     static Stream<Arguments> provideTestArrays() {
