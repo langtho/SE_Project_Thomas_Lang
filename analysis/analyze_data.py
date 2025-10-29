@@ -51,7 +51,7 @@ def plot_function_time_comparison(df, function_type):
                 )
 
     # 5. Achsen-Konfiguration
-    plt.xscale('log')
+    # plt.xscale('log') <-- ENTFERNT
     plt.ylim(bottom=0)
     
     # Y-Achsen-Begrenzung auf das 95. Perzentil
@@ -60,7 +60,7 @@ def plot_function_time_comparison(df, function_type):
     if max_y_limit is not None:
          plt.ylim(top=max_y_limit)
 
-    plt.xlabel('Uncompressed Array Size (log scale)', fontsize=12)
+    plt.xlabel('Uncompressed Array Size', fontsize=12) # Angepasst
     plt.ylabel('Average Time (ms)', fontsize=12)
     plt.title(f'Comparison of Compression Types for: {function_type}', fontsize=16)
     plt.grid(True, which="major", linestyle='--', alpha=0.5)
@@ -112,11 +112,11 @@ def plot_function_size_comparison(df):
                 )
 
     # 4. Achsen-Konfiguration
-    plt.xscale('log')
-    plt.yscale('log') # Log-Log ist hier meist am besten für Größenvergleiche
+    # plt.xscale('log') <-- ENTFERNT
+    # plt.yscale('log') # <-- ENTFERNT
     
-    plt.xlabel('Uncompressed Array Size (log scale)', fontsize=12)
-    plt.ylabel('Average Compressed Size (log scale)', fontsize=12)
+    plt.xlabel('Uncompressed Array Size', fontsize=12) # Angepasst
+    plt.ylabel('Average Compressed Size', fontsize=12) # Angepasst
     plt.title('Comparison of Compression Types: Compressed Size vs. Array Size', fontsize=16)
     plt.grid(True, which="major", linestyle='--', alpha=0.6)
     plt.legend(title='Compression / Value Size', bbox_to_anchor=(1.05, 1), loc='upper left')
@@ -143,7 +143,7 @@ def plot_compression_ratio(df):
     plt.figure(figsize=(12, 8))
     
     # 1. Definiere Linien-Styles für die Kompressionstypen
-    line_styles = {'NonSpanning': 'solid', 'Spanning': 'dashed', 'Overflow': 'dotted'}
+    line_styles = {'NonSpanning': 'solid', 'Spanning': 'solid', 'Overflow': 'solid'}
     color_map = {'small_v': 'blue', 'medium_v': 'orange', 'large_v': 'red', 'mixed_v': 'yellow'}
     
     # 2. Plotte die Linien
@@ -158,11 +158,11 @@ def plot_compression_ratio(df):
                 # Glättungslogik (wie zuvor)
                 X_data = subset['uncompressedArraySize'].values
                 Y_data = subset['ratio'].values
-                log_X_data = np.log10(X_data)
-                spl = make_interp_spline(log_X_data, Y_data, k=3)
-                X_smooth_log = np.linspace(log_X_data.min(), log_X_data.max(), 500)
-                X_smooth = np.power(10, X_smooth_log)
-                Y_smooth = spl(X_smooth_log)
+                
+                # Entfernung der Log-Skala für die Glättung (macht jetzt keine Log-Glättung)
+                spl = make_interp_spline(X_data, Y_data, k=3)
+                X_smooth = np.linspace(X_data.min(), X_data.max(), 500)
+                Y_smooth = spl(X_smooth)
                 
                 plt.plot(
                     X_smooth, 
@@ -172,9 +172,9 @@ def plot_compression_ratio(df):
                     label=f'{comp_type} ({value_size})'
                 )
 
-    plt.xscale('log')
+    # plt.xscale('log') <-- ENTFERNT
     plt.ylim(0, 1.05) # Rate liegt zwischen 0 und 1 (1 = 100% Kompression)
-    plt.xlabel('Uncompressed Array Size (log scale)', fontsize=12)
+    plt.xlabel('Uncompressed Array Size', fontsize=12) # Angepasst
     plt.ylabel('Average Compression Ratio (0-1)', fontsize=12)
     plt.title('Compression Ratio vs. Array Size (Effectiveness)', fontsize=14)
     plt.grid(True, which="both", linestyle='--', alpha=0.5)
@@ -218,6 +218,8 @@ def plot_efficiency(df):
             
     plt.xlim(left=0) # Zeit beginnt bei 0
     plt.ylim(0, 1.05) # Ratio liegt zwischen 0 und 1
+    # plt.xscale('log') <-- ENTFERNT
+    
     plt.xlabel('Total Time (ms) (Lower is Better)', fontsize=12)
     plt.ylabel('Compression Ratio (0-1) (Higher is Better)', fontsize=12)
     plt.title('Efficiency: Compression Ratio vs. Time', fontsize=14)
@@ -279,7 +281,7 @@ def plot_category_heatmap(df, compression_type, function_type):
 def plot_time_vs_array_size(df, compression_type, function_type):
     """
     Plots a scatter plot of total time vs. uncompressed array size.
-    Verwendet eine lineare Y-Achse, logarithmische X-Achse und begrenzt die Y-Achse 
+    Verwendet eine lineare Y-Achse und begrenzt die Y-Achse 
     dynamisch auf das 95. Perzentil der Zeitdaten.
     """
     
@@ -308,7 +310,7 @@ def plot_time_vs_array_size(df, compression_type, function_type):
                 label=f'Value Size: {value_size}'
             )
             
-    # *** NEU: Dynamische Y-Achsen-Begrenzung ***
+    # *** Dynamische Y-Achsen-Begrenzung ***
     
     # Nur gültige, positive Zeiten betrachten
     positive_times = df['fullTimeMillis'][df['fullTimeMillis'] > 0]
@@ -329,9 +331,9 @@ def plot_time_vs_array_size(df, compression_type, function_type):
         plt.ylim(bottom=0)
             
     # 3. Wende die Skalierung an
-    plt.xscale('log')
+    # plt.xscale('log') <-- ENTFERNT
             
-    plt.xlabel('Uncompressed Array Size (log scale)', fontsize=12)
+    plt.xlabel('Uncompressed Array Size', fontsize=12) # Angepasst
     plt.ylabel('Time (ms)', fontsize=12)
     plt.title(f'Time vs. Array-Size for {compression_type} ({function_type}) (Limited Linear Time Scale)', fontsize=14)
     plt.grid(True, which="major", linestyle='--', alpha=0.5)
@@ -480,20 +482,20 @@ def process_and_plot(df, compression_type, function_type):
     filtered_df['fullTimeMillis'] = filtered_df['fullDurationNanos'] / 1_000_000
 
     # 1. Time vs. Array-Size (Immer relevant)
-    #plot_time_vs_array_size(filtered_df, compression_type, function_type)
+    plot_time_vs_array_size(filtered_df, compression_type, function_type)
     
     # 2. Compressed Size vs. Array-Size (Nur für 'Compress' relevant)
-    #if function_type == 'Compress':
-        #plot_compressed_size_vs_array_size(filtered_df, compression_type)
+    if function_type == 'Compress':
+        plot_compressed_size_vs_array_size(filtered_df, compression_type)
     
     # 3. Stacked Bar Chart (Immer relevant)
-    #plot_stacked_bar_chart(filtered_df, compression_type, function_type)
+    plot_stacked_bar_chart(filtered_df, compression_type, function_type)
 
-    #plot_category_heatmap(filtered_df,compression_type,function_type)
+    plot_category_heatmap(filtered_df,compression_type,function_type)
 
-    #plot_efficiency(filtered_df)
+    plot_efficiency(filtered_df)
 
-    #plot_compression_ratio(filtered_df)
+    plot_compression_ratio(filtered_df)
 
 
 def main():
@@ -525,14 +527,18 @@ def main():
     # Diese Liste kannst du einfach erweitern!
     plot_combinations = [
         # Compress-Operationen
-        ('NonSpanning', 'Compress'),
-        ('Spanning', 'Compress'),
-        ('Overflow', 'Compress'),
+        #('NonSpanning', 'Compress'),
+        #('Spanning', 'Compress'),
+        #('Overflow', 'Compress'),
         
         # Decompress-Operationen (falls Daten vorhanden)
-        ('NonSpanning', 'Decompress'),
-        ('Spanning', 'Decompress'),
+        #('NonSpanning', 'Decompress'),
+        #('Spanning', 'Decompress'),
         ('Overflow', 'Decompress'),
+
+        #('NonSpanning', 'get'),
+        #('Spanning', 'get'),
+        ('Overflow', 'get'),
     ]
 
     # 3. Iteration über alle Kombinationen und Aufruf der neuen Funktion
@@ -541,13 +547,13 @@ def main():
 
     # 2. NEU: Direkter Vergleich aller Compression Types für COMPRESS
     print("\n--- Erstelle globale Vergleichs-Diagramme für 'Compress' ---")
-    plot_function_time_comparison(df, 'Compress')
-    plot_function_size_comparison(df)
+    #plot_function_time_comparison(df, 'Compress')
+    #plot_function_size_comparison(df)
 
 
     # 3. NEU: Direkter Vergleich aller Compression Types für DECOMPRESS
     print("\n--- Erstelle globale Vergleichs-Diagramme für 'Decompress' ---")
-    plot_function_time_comparison(df, 'Decompress')
+    #plot_function_time_comparison(df, 'Decompress')
     # 4. Alle erstellten Diagramme anzeigen
     print("\nAlle Diagramme wurden erstellt und werden nun angezeigt.")
     plt.show()

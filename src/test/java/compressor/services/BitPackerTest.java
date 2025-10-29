@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Random;
+import java.util.Arrays;
 
 
 class BitPackerTest {
@@ -95,13 +96,16 @@ class BitPackerTest {
     @MethodSource("generateRandomArrays")
     @ParameterizedTest
     void testOverflow(String sizeLabel, String valueLabel,int[] array) {
-        int[] compressed = overflow.compress(array,  sizeLabel, valueLabel);
+        int[] original_for_comparison = Arrays.copyOf(array, array.length);
+        int[] mutable_array_for_compress = array.clone();
+
+        int[] compressed = overflow.compress(mutable_array_for_compress,  sizeLabel, valueLabel);
         int[] decompressed = overflow.decompress(compressed,  sizeLabel, valueLabel);
-        assertArrayEquals(array, decompressed, "Overflow: The decompressed array should match the original.");
+        assertArrayEquals(original_for_comparison, decompressed, "Overflow: The decompressed array should match the original.");
         if (array.length > 0) {
             int i = RANDOM.nextInt(array.length);
             int retrievedValue = overflow.get(i, compressed,  sizeLabel, valueLabel);
-            assertEquals(retrievedValue, array[i], "Overflow: Retrieved value should match original at index " + i);
+            assertEquals(retrievedValue, original_for_comparison[i], "Overflow: Retrieved value should match original at index " + i);
         }
     }
 

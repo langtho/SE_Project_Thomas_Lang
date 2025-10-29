@@ -65,7 +65,7 @@ public class OverflowBP implements BitPacker {
         String encoded_overflow_size = encodeEliasGamma(overflow_size + 1);
 
         // Calculate the size of the new compressed array (in bits, then converted to array size)
-        int new_array_size = (triplet.getValue1()) / 32 + overflow_size;
+        int new_array_size = (triplet.getValue1()) / 32 ;
 
         // Number of unused bits at the end of the compressed array (before the overflow area)
         int unused_bits = 32 - ((((chunk_size + 1) * array.length) + 10 + encoded_overflow_size.length()) % 32);
@@ -397,7 +397,8 @@ public class OverflowBP implements BitPacker {
                 int overflow_data_bits = (temp_overflow_size - 1) * 32;
                 int metadata_bits = 10;
 
-                int temp_size_bits = packed_data_bits + elias_gamma_overhead + overflow_data_bits + metadata_bits;
+                int temp_regular_size=(int) Math.ceil(packed_data_bits+metadata_bits+elias_gamma_overhead);
+                int temp_size_bits = temp_regular_size+overflow_data_bits;
                 int temp_size = (int) Math.ceil(temp_size_bits / 32.0) * 32;
                 if (temp_size <= size_for_smallest_chunk || current_smallest_chunk == 0) {
                     if (32 - Integer.numberOfLeadingZeros(temp_overflow_size) <= i + 1) {
@@ -458,7 +459,7 @@ public class OverflowBP implements BitPacker {
             bit_cursor++;
             if (bit_cursor >= 32) {
                 bit_cursor = 0;
-                bit_cursor++; // Original logic has double increment, kept for compatibility
+                array_index++;
             }
         }
 

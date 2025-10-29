@@ -18,10 +18,11 @@ public class Main {
         }
 
         try {
+
             // 2. Convert the args array to a List<String>
-            List<String> argList = Arrays.asList(args);
+            ArrayList<String> argList = new ArrayList<>(Arrays.asList(args));
             // 3. Instantiate the APIController using the List
-            APIController controller = new APIController((ArrayList<String>) argList);
+            APIController controller = new APIController( argList);
             // 4. Execute the command
             controller.run();
 

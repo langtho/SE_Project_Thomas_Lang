@@ -75,7 +75,7 @@ public class APIController {
                 this.loggingTypeArgument = args.get(currentArgIndex + 1);
                 currentArgIndex += 2; // Skip both the flag and its value
 
-            } else if (currentArg.equals("--performancelogging")) {
+            } else if (currentArg.equals("--performance")) {
                 // Process the file path associated with the --performancelogging flag
                 if (currentArgIndex + 1 >= args.size() || args.get(currentArgIndex + 1).startsWith("--")) {
                     throw new IllegalArgumentException("The flag '--performancelogging' requires a file path as the next argument.");
