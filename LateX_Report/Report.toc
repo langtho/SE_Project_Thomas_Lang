@@ -1,0 +1,73 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Core Concept: Bit Packing and Direct Access}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Project Components}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Design and Architecture}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Directory and File Architecture}{3}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Architecture justification}{4}{subsubsection.2.1.1}%
+\contentsline {paragraph}{Separation of Concerns (SoC) \cite {soc}}{5}{section*.2}%
+\contentsline {paragraph}{Adherence to Design Patterns}{5}{section*.3}%
+\contentsline {paragraph}{Testability and Reproducibility}{5}{section*.4}%
+\contentsline {section}{\numberline {3}Design Patterns}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Singleton Pattern: Managing Shared Resources}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The Factory Method Pattern: Decoupling Creation}{5}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Implementation: The Bit Packing Mechanisms}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The \texttt {BitPacker} Interface and Factory}{6}{subsection.4.1}%
+\contentsline {paragraph}{The \texttt {BitPacker} Interface}{6}{section*.7}%
+\contentsline {paragraph}{The \texttt {BitPackerFactory}}{6}{section*.8}%
+\contentsline {subsection}{\numberline {4.2}Non-Spanning Bit Packing (\texttt {NonSpanningBP})}{6}{subsection.4.2}%
+\contentsline {paragraph}{Compression Logic}{6}{section*.9}%
+\contentsline {paragraph}{The \texttt {get} Method (Random Access)}{7}{section*.10}%
+\contentsline {subsection}{\numberline {4.3}Analysis of Non-Spanning Performance}{7}{subsection.4.3}%
+\contentsline {paragraph}{The compression efficiency}{7}{figure.3}%
+\contentsline {paragraph}{The compress method}{9}{figure.6}%
+\contentsline {paragraph}{The decompression method}{11}{figure.9}%
+\contentsline {paragraph}{The get method}{12}{figure.11}%
+\contentsline {subsection}{\numberline {4.4}Spanning Bit Packing (\texttt {SpanningBP})}{12}{subsection.4.4}%
+\contentsline {paragraph}{Core Principle: Continuous Bit Stream for Maximum Density}{12}{section*.15}%
+\contentsline {paragraph}{Compression Logic}{13}{section*.16}%
+\contentsline {paragraph}{The \texttt {get} Method (Random Access)}{13}{section*.17}%
+\contentsline {subsection}{\numberline {4.5}Analysis of Spanning Bit Packing Strategy}{13}{subsection.4.5}%
+\contentsline {paragraph}{The compression efficiency}{13}{figure.13}%
+\contentsline {paragraph}{The compress method}{15}{figure.16}%
+\contentsline {paragraph}{The decompression method}{17}{figure.19}%
+\contentsline {paragraph}{The get method}{18}{figure.21}%
+\contentsline {subsection}{\numberline {4.6}Overflow Bit Packing (\texttt {OverflowBP})}{19}{subsection.4.6}%
+\contentsline {paragraph}{Core Principle: Separating Outliers}{19}{section*.22}%
+\contentsline {paragraph}{The \texttt {compress} Method}{19}{section*.23}%
+\contentsline {paragraph}{The \texttt {decompress} and \texttt {get} Methods}{19}{section*.24}%
+\contentsline {subsection}{\numberline {4.7}Analysis of Overflow Bit Packing Strategy}{20}{subsection.4.7}%
+\contentsline {paragraph}{The compression efficiency}{21}{figure.24}%
+\contentsline {paragraph}{The compress method}{22}{figure.27}%
+\contentsline {paragraph}{The decompression method}{24}{figure.30}%
+\contentsline {paragraph}{The get method}{25}{figure.32}%
+\contentsline {section}{\numberline {5}Comparison of the Compression Strategies}{25}{section.5}%
+\contentsline {section}{\numberline {6}Handling Negative Integers (Proposition)}{27}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Adaptation using a Dedicated Sign Bit}{27}{subsection.6.1}%
+\contentsline {paragraph}{Proposed Mechanism: Sign Bit Overhead}{27}{section*.29}%
+\contentsline {paragraph}{Justification and Trade-offs}{28}{section*.30}%
+\contentsline {section}{\numberline {7}The Logging System}{28}{section.7}%
+\contentsline {subsection}{\numberline {7.1}The \texttt {Logger} Interface and \texttt {LogLevel}}{28}{subsection.7.1}%
+\contentsline {paragraph}{The \texttt {Logger} Interface}{28}{section*.31}%
+\contentsline {paragraph}{The \texttt {LogLevel} Enum}{28}{section*.32}%
+\contentsline {subsection}{\numberline {7.2}Concrete Implementation: \texttt {ConsoleLogger}}{28}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}The \texttt {LoggerFactory}}{28}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Time Taking (Benchmarking) System}{29}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Design and Components}{29}{subsection.8.1}%
+\contentsline {paragraph}{I. PerformanceTimer (Singleton Pattern)}{29}{section*.34}%
+\contentsline {paragraph}{II. PerformanceData and Measurement}{29}{section*.35}%
+\contentsline {subsection}{\numberline {8.2}Detailed Time Segmentation}{29}{subsection.8.2}%
+\contentsline {section}{\numberline {9}Testing and Validation}{30}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Overview and Reversibility Principle}{30}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Test Data Generation Strategy}{30}{subsection.9.2}%
+\contentsline {paragraph}{I. Value Range Categories and Bit Requirements}{30}{section*.36}%
+\contentsline {paragraph}{II. Specialized Mixed Value Generation}{30}{section*.37}%
+\contentsline {paragraph}{III. Pre-defined Edge Case Validation}{30}{section*.38}%
+\contentsline {subsection}{\numberline {9.3}Core Validation Tests and Array Protection}{31}{subsection.9.3}%
+\contentsline {paragraph}{I. The Full Application Matrix}{31}{section*.39}%
+\contentsline {paragraph}{II. Test Methods Applied:}{31}{section*.40}%
+\contentsline {section}{\numberline {10}Data Analysis and Visualization}{31}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Analysis Methodology}{31}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Visualization and Comparative Analysis}{31}{subsection.10.2}%
+\contentsline {paragraph}{I. Speed and Overhead Analysis (Time-Based Plots)}{31}{section*.41}%
+\contentsline {paragraph}{II. Space Efficiency Analysis (Size-Based Plots)}{32}{section*.42}%
