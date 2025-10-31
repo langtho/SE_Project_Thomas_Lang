@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
+
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,9 +20,9 @@ class BitPackerTest {
     private static final int tests_per_case = 100;
     private static final Random RANDOM = new Random();
 
-    private final SpanningBP spanningBP=new SpanningBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
-    private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
-    private final OverflowBP overflow=new OverflowBP(jsonFile, LoggerFactory.createLogger("DEBUG"));
+    private final SpanningBP spanningBP=new SpanningBP(jsonFile, LoggerFactory.createLogger("NONE"));
+    private final NonSpanningBP nonSpanningBP=new NonSpanningBP(jsonFile, LoggerFactory.createLogger("NONE"));
+    private final OverflowBP overflow=new OverflowBP(jsonFile, LoggerFactory.createLogger("NONE"));
 
 
     static Stream<Arguments> provideTestArrays() {
@@ -63,12 +64,12 @@ class BitPackerTest {
     }
 
     public static Stream<Arguments> generateRandomArrays() {
-        return TestDataGenerator.generateAllTestCases(tests_per_case);
+        return DataGenerator.generateAllTestCases(tests_per_case);
     }
 
     // Methode, die die Testdaten liefert (verwende deinen TestDataGenerator)
-    @MethodSource("generateRandomArrays")
     @ParameterizedTest
+    @MethodSource("generateRandomArrays")
     void testNonSpanning(String sizeLabel, String valueLabel,int[] array) {
         int[] compressed = nonSpanningBP.compress(array,  sizeLabel, valueLabel);
         int[] decompressed = nonSpanningBP.decompress(compressed,  sizeLabel, valueLabel);
