@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.28)  29 OCT 2025 16:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2024.9.28)  1 NOV 2025 15:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -508,19 +508,19 @@ LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
 ] [4] [5]
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/cmtt/m/n' tried instead on input line 201.
-<Grafics/nonspanning.png, id=228, 841.1425pt x 116.435pt>
+<Grafics/nonspanning.png, id=243, 841.1425pt x 116.435pt>
 File: Grafics/nonspanning.png Graphic file (type png)
 <use Grafics/nonspanning.png>
 Package pdftex.def Info: Grafics/nonspanning.png  used on input line 222.
 (pdftex.def)             Requested size: 386.95897pt x 53.5643pt.
  [6 <./Grafics/NonSpanning.png>]
-<Grafics/NonSpanning/NonSpanningefficency.png, id=241, 722.7pt x 433.62pt>
+<Grafics/NonSpanning/NonSpanningefficency.png, id=256, 722.7pt x 433.62pt>
 File: Grafics/NonSpanning/NonSpanningefficency.png Graphic file (type png)
 <use Grafics/NonSpanning/NonSpanningefficency.png>
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningefficency.png  used on 
 input line 242.
 (pdftex.def)             Requested size: 386.95897pt x 232.17297pt.
-<Grafics/NonSpanning/NonSpanningCompressTimevsSize.png, id=242, 867.24pt x 578.
+<Grafics/NonSpanning/NonSpanningCompressTimevsSize.png, id=257, 867.24pt x 578.
 16pt>
 File: Grafics/NonSpanning/NonSpanningCompressTimevsSize.png Graphic file (type 
 png)
@@ -528,14 +528,14 @@ png)
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningCompressTimevsSize.png 
  used on input line 252.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/NonSpanning/NonSpanningCompressTime.png, id=243, 867.24pt x 578.16pt>
+<Grafics/NonSpanning/NonSpanningCompressTime.png, id=258, 867.24pt x 578.16pt>
 File: Grafics/NonSpanning/NonSpanningCompressTime.png Graphic file (type png)
 <use Grafics/NonSpanning/NonSpanningCompressTime.png>
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningCompressTime.png  used 
 on input line 259.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
  [7 <./Grafics/NonSpanning/NonSpanningefficency.png>]
-<Grafics/NonSpanning/NonSpanningCompressHeat.png, id=253, 722.7pt x 505.89pt>
+<Grafics/NonSpanning/NonSpanningCompressHeat.png, id=268, 722.7pt x 505.89pt>
 File: Grafics/NonSpanning/NonSpanningCompressHeat.png Graphic file (type png)
 <use Grafics/NonSpanning/NonSpanningCompressHeat.png>
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningCompressHeat.png  used 
@@ -543,7 +543,7 @@ on input line 266.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
  [8 <./Grafics/NonSpanning/NonSpanningCompressTimevsSize.png> <./Grafics/NonSpa
 nning/NonSpanningCompressTime.png>]
-<Grafics/NonSpanning/NonSpanningDecompressTimevsSize.png, id=265, 867.24pt x 57
+<Grafics/NonSpanning/NonSpanningDecompressTimevsSize.png, id=280, 867.24pt x 57
 8.16pt>
 File: Grafics/NonSpanning/NonSpanningDecompressTimevsSize.png Graphic file (typ
 e png)
@@ -551,7 +551,7 @@ e png)
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningDecompressTimevsSize.pn
 g  used on input line 280.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/NonSpanning/NonSpanningDecompressTime.png, id=266, 867.24pt x 578.16pt
+<Grafics/NonSpanning/NonSpanningDecompressTime.png, id=281, 867.24pt x 578.16pt
 >
 File: Grafics/NonSpanning/NonSpanningDecompressTime.png Graphic file (type png)
 
@@ -560,7 +560,7 @@ Package pdftex.def Info: Grafics/NonSpanning/NonSpanningDecompressTime.png  use
 d on input line 287.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
  [9 <./Grafics/NonSpanning/NonSpanningCompressHeat.png>]
-<Grafics/NonSpanning/NonSpanningDecompressHeat.png, id=274, 722.7pt x 505.89pt>
+<Grafics/NonSpanning/NonSpanningDecompressHeat.png, id=289, 722.7pt x 505.89pt>
 
 File: Grafics/NonSpanning/NonSpanningDecompressHeat.png Graphic file (type png)
 
@@ -570,14 +570,14 @@ d on input line 294.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
  [10 <./Grafics/NonSpanning/NonSpanningDecompressTimevsSize.png> <./Grafics/Non
 Spanning/NonSpanningDecompressTime.png>]
-<Grafics/NonSpanning/NonSpanningGetTimevsSize.png, id=286, 867.24pt x 578.16pt>
+<Grafics/NonSpanning/NonSpanningGetTimevsSize.png, id=301, 867.24pt x 578.16pt>
 
 File: Grafics/NonSpanning/NonSpanningGetTimevsSize.png Graphic file (type png)
 <use Grafics/NonSpanning/NonSpanningGetTimevsSize.png>
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningGetTimevsSize.png  used
  on input line 305.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/NonSpanning/NonSpanningGetHeat.png, id=287, 722.7pt x 505.89pt>
+<Grafics/NonSpanning/NonSpanningGetHeat.png, id=302, 722.7pt x 505.89pt>
 File: Grafics/NonSpanning/NonSpanningGetHeat.png Graphic file (type png)
 <use Grafics/NonSpanning/NonSpanningGetHeat.png>
 Package pdftex.def Info: Grafics/NonSpanning/NonSpanningGetHeat.png  used on in
@@ -585,32 +585,32 @@ put line 313.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
  [11 <./Grafics/NonSpanning/NonSpanningDecompressHeat.png> <./Grafics/NonSpanni
 ng/NonSpanningGetTimevsSize.png>]
-<Grafics/spanning.png, id=299, 846.16125pt x 167.62625pt>
+<Grafics/spanning.png, id=314, 846.16125pt x 167.62625pt>
 File: Grafics/spanning.png Graphic file (type png)
 <use Grafics/spanning.png>
 Package pdftex.def Info: Grafics/spanning.png  used on input line 325.
 (pdftex.def)             Requested size: 386.95897pt x 76.65627pt.
  [12 <./Grafics/NonSpanning/NonSpanningGetHeat.png> <./Grafics/Spanning.png>]
-<Grafics/Spanning/Spanningefficency.png, id=310, 722.7pt x 433.62pt>
+<Grafics/Spanning/Spanningefficency.png, id=326, 722.7pt x 433.62pt>
 File: Grafics/Spanning/Spanningefficency.png Graphic file (type png)
 <use Grafics/Spanning/Spanningefficency.png>
 Package pdftex.def Info: Grafics/Spanning/Spanningefficency.png  used on input 
 line 356.
 (pdftex.def)             Requested size: 386.95897pt x 232.17297pt.
-<Grafics/Spanning/SpanningCompressTimevsSize.png, id=312, 867.24pt x 578.16pt>
+<Grafics/Spanning/SpanningCompressTimevsSize.png, id=328, 867.24pt x 578.16pt>
 File: Grafics/Spanning/SpanningCompressTimevsSize.png Graphic file (type png)
 <use Grafics/Spanning/SpanningCompressTimevsSize.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningCompressTimevsSize.png  used 
 on input line 366.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/Spanning/SpanningCompressTime.png, id=313, 867.24pt x 578.16pt>
+<Grafics/Spanning/SpanningCompressTime.png, id=329, 867.24pt x 578.16pt>
 File: Grafics/Spanning/SpanningCompressTime.png Graphic file (type png)
 <use Grafics/Spanning/SpanningCompressTime.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningCompressTime.png  used on inp
 ut line 373.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
  [13 <./Grafics/Spanning/Spanningefficency.png>]
-<Grafics/Spanning/SpanningCompressHeat.png, id=325, 722.7pt x 505.89pt>
+<Grafics/Spanning/SpanningCompressHeat.png, id=340, 722.7pt x 505.89pt>
 File: Grafics/Spanning/SpanningCompressHeat.png Graphic file (type png)
 <use Grafics/Spanning/SpanningCompressHeat.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningCompressHeat.png  used on inp
@@ -618,204 +618,199 @@ ut line 380.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
  [14 <./Grafics/Spanning/SpanningCompressTimevsSize.png> <./Grafics/Spanning/Sp
 anningCompressTime.png>]
-<Grafics/Spanning/SpanningDecompressTimevsSize.png, id=337, 867.24pt x 578.16pt
+<Grafics/Spanning/SpanningDecompressTimevsSize.png, id=352, 867.24pt x 578.16pt
 >
 File: Grafics/Spanning/SpanningDecompressTimevsSize.png Graphic file (type png)
 
 <use Grafics/Spanning/SpanningDecompressTimevsSize.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningDecompressTimevsSize.png  use
-d on input line 391.
+d on input line 393.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/Spanning/SpanningDecompressTime.png, id=338, 867.24pt x 578.16pt>
+<Grafics/Spanning/SpanningDecompressTime.png, id=353, 867.24pt x 578.16pt>
 File: Grafics/Spanning/SpanningDecompressTime.png Graphic file (type png)
 <use Grafics/Spanning/SpanningDecompressTime.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningDecompressTime.png  used on i
-nput line 398.
+nput line 400.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
  [15 <./Grafics/Spanning/SpanningCompressHeat.png>]
-<Grafics/Spanning/SpanningDecompressHeat.png, id=346, 722.7pt x 505.89pt>
+<Grafics/Spanning/SpanningDecompressHeat.png, id=361, 722.7pt x 505.89pt>
 File: Grafics/Spanning/SpanningDecompressHeat.png Graphic file (type png)
 <use Grafics/Spanning/SpanningDecompressHeat.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningDecompressHeat.png  used on i
-nput line 405.
+nput line 407.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
  [16 <./Grafics/Spanning/SpanningDecompressTimevsSize.png> <./Grafics/Spanning/
 SpanningDecompressTime.png>]
-<Grafics/Spanning/SpanningGetTimevsSize.png, id=359, 867.24pt x 578.16pt>
+<Grafics/Spanning/SpanningGetTimevsSize.png, id=374, 867.24pt x 578.16pt>
 File: Grafics/Spanning/SpanningGetTimevsSize.png Graphic file (type png)
 <use Grafics/Spanning/SpanningGetTimevsSize.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningGetTimevsSize.png  used on in
-put line 414.
+put line 416.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
- [17 <./Grafics/Spanning/SpanningDecompressHeat.png>]
-<Grafics/Spanning/SpanningGetHeat.png, id=367, 722.7pt x 505.89pt>
+<Grafics/Spanning/SpanningGetHeat.png, id=375, 722.7pt x 505.89pt>
 File: Grafics/Spanning/SpanningGetHeat.png Graphic file (type png)
 <use Grafics/Spanning/SpanningGetHeat.png>
 Package pdftex.def Info: Grafics/Spanning/SpanningGetHeat.png  used on input li
-ne 422.
+ne 424.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
-<Grafics/overflow.png, id=370, 848.16875pt x 275.0275pt>
+ [17 <./Grafics/Spanning/SpanningDecompressHeat.png> <./Grafics/Spanning/Spanni
+ngGetTimevsSize.png>]
+<Grafics/overflow.png, id=387, 848.16875pt x 275.0275pt>
 File: Grafics/overflow.png Graphic file (type png)
 <use Grafics/overflow.png>
-Package pdftex.def Info: Grafics/overflow.png  used on input line 433.
+Package pdftex.def Info: Grafics/overflow.png  used on input line 435.
 (pdftex.def)             Requested size: 386.95897pt x 125.47343pt.
+ [18 <./Grafics/Spanning/SpanningGetHeat.png> <./Grafics/Overflow.png>]
+
+LaTeX Warning: Reference `elias' on page 19 undefined on input line 454.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[18 <./Grafics/Spanning/SpanningGetTimevsSize.png> <./Grafics/Spanning/Spanning
-GetHeat.png>]
-
-LaTeX Warning: Reference `elias' on page 19 undefined on input line 452.
-
-
-Underfull \hbox (badness 1127) in paragraph at lines 452--453
+Underfull \hbox (badness 1127) in paragraph at lines 454--455
 []\T1/cmr/bx/n/10.95 Metadata and Elias Gamma En-cod-ing: \T1/cmr/m/n/10.95 Be-
 sides the 10 bits for \T1/cmtt/m/n/10.95 chunk_size \T1/cmr/m/n/10.95 and
  []
 
-[19 <./Grafics/Overflow.png>]
-<Grafics/Overflow/Overflowefficency.png, id=395, 722.7pt x 433.62pt>
+<Grafics/Overflow/Overflowefficency.png, id=400, 722.7pt x 433.62pt>
 File: Grafics/Overflow/Overflowefficency.png Graphic file (type png)
 <use Grafics/Overflow/Overflowefficency.png>
 Package pdftex.def Info: Grafics/Overflow/Overflowefficency.png  used on input 
-line 478.
+line 480.
 (pdftex.def)             Requested size: 386.95897pt x 232.17297pt.
-<Grafics/Overflow/OverflowEffectiveness.png, id=396, 867.24pt x 578.16pt>
-File: Grafics/Overflow/OverflowEffectiveness.png Graphic file (type png)
-<use Grafics/Overflow/OverflowEffectiveness.png>
-Package pdftex.def Info: Grafics/Overflow/OverflowEffectiveness.png  used on in
-put line 484.
-(pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
- [20 <./Grafics/Overflow/Overflowefficency.png>]
-<Grafics/Overflow/OverflowCompressTimevsSize.png, id=407, 867.24pt x 578.16pt>
+[19]
+<Grafics/Overflow/OverflowCompressTimevsSize.png, id=414, 867.24pt x 578.16pt>
 File: Grafics/Overflow/OverflowCompressTimevsSize.png Graphic file (type png)
 <use Grafics/Overflow/OverflowCompressTimevsSize.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowCompressTimevsSize.png  used 
-on input line 493.
+on input line 489.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/Overflow/OverflowCompressTime.png, id=408, 867.24pt x 578.16pt>
+<Grafics/Overflow/OverflowCompressTime.png, id=415, 867.24pt x 578.16pt>
 File: Grafics/Overflow/OverflowCompressTime.png Graphic file (type png)
 <use Grafics/Overflow/OverflowCompressTime.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowCompressTime.png  used on inp
-ut line 500.
+ut line 496.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-
-[21 <./Grafics/Overflow/OverflowEffectiveness.png> <./Grafics/Overflow/Overflow
-CompressTimevsSize.png>]
-<Grafics/Overflow/OverflowCompressHeat.png, id=418, 722.7pt x 505.89pt>
+ [20 <./Grafics/Overflow/Overflowefficency.png> <./Grafics/Overflow/OverflowCom
+pressTimevsSize.png>]
+<Grafics/Overflow/OverflowCompressHeat.png, id=425, 722.7pt x 505.89pt>
 File: Grafics/Overflow/OverflowCompressHeat.png Graphic file (type png)
 <use Grafics/Overflow/OverflowCompressHeat.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowCompressHeat.png  used on inp
-ut line 507.
+ut line 503.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
-<Grafics/Overflow/OverflowDecompressTimevsSize.png, id=422, 867.24pt x 578.16pt
+<Grafics/Overflow/OverflowDecompressTimevsSize.png, id=429, 867.24pt x 578.16pt
 >
 File: Grafics/Overflow/OverflowDecompressTimevsSize.png Graphic file (type png)
 
 <use Grafics/Overflow/OverflowDecompressTimevsSize.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowDecompressTimevsSize.png  use
-d on input line 518.
+d on input line 514.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/Overflow/OverflowDecompressTime.png, id=423, 867.24pt x 578.16pt>
+<Grafics/Overflow/OverflowDecompressTime.png, id=430, 867.24pt x 578.16pt>
 File: Grafics/Overflow/OverflowDecompressTime.png Graphic file (type png)
 <use Grafics/Overflow/OverflowDecompressTime.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowDecompressTime.png  used on i
-nput line 525.
+nput line 521.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
- [22 <./Grafics/Overflow/OverflowCompressTime.png> <./Grafics/Overflow/Overflow
+ [21 <./Grafics/Overflow/OverflowCompressTime.png> <./Grafics/Overflow/Overflow
 CompressHeat.png>]
-<Grafics/Overflow/OverflowDecompressHeat.png, id=433, 722.7pt x 505.89pt>
+<Grafics/Overflow/OverflowDecompressHeat.png, id=440, 722.7pt x 505.89pt>
 File: Grafics/Overflow/OverflowDecompressHeat.png Graphic file (type png)
 <use Grafics/Overflow/OverflowDecompressHeat.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowDecompressHeat.png  used on i
-nput line 532.
+nput line 528.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
- [23 <./Grafics/Overflow/OverflowDecompressTimevsSize.png> <./Grafics/Overflow/
+ [22 <./Grafics/Overflow/OverflowDecompressTimevsSize.png> <./Grafics/Overflow/
 OverflowDecompressTime.png>]
-<Grafics/Overflow/OverflowGetTimevsSize.png, id=445, 867.24pt x 578.16pt>
+<Grafics/Overflow/OverflowGetTimevsSize.png, id=452, 867.24pt x 578.16pt>
 File: Grafics/Overflow/OverflowGetTimevsSize.png Graphic file (type png)
 <use Grafics/Overflow/OverflowGetTimevsSize.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowGetTimevsSize.png  used on in
-put line 541.
+put line 537.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
-<Grafics/Overflow/OverflowGetHeat.png, id=446, 722.7pt x 505.89pt>
+<Grafics/Overflow/OverflowGetHeat.png, id=453, 722.7pt x 505.89pt>
 File: Grafics/Overflow/OverflowGetHeat.png Graphic file (type png)
 <use Grafics/Overflow/OverflowGetHeat.png>
 Package pdftex.def Info: Grafics/Overflow/OverflowGetHeat.png  used on input li
-ne 549.
+ne 545.
 (pdftex.def)             Requested size: 386.95897pt x 270.86847pt.
- [24 <./Grafics/Overflow/OverflowDecompressHeat.png> <./Grafics/Overflow/Overfl
-owGetTimevsSize.png>]
-<Grafics/Compare/Comparingcompression.png, id=456, 1011.78pt x 650.43pt>
+
+[23 <./Grafics/Overflow/OverflowDecompressHeat.png> <./Grafics/Overflow/Overflo
+wGetTimevsSize.png>]
+<Grafics/Compare/Comparingcompression.png, id=463, 1011.78pt x 650.43pt>
 File: Grafics/Compare/Comparingcompression.png Graphic file (type png)
 <use Grafics/Compare/Comparingcompression.png>
 Package pdftex.def Info: Grafics/Compare/Comparingcompression.png  used on inpu
-t line 559.
+t line 555.
 (pdftex.def)             Requested size: 386.95897pt x 248.76384pt.
-<Grafics/Compare/ComparingEffectivenesscompression.png, id=457, 867.24pt x 578.
+<Grafics/Compare/ComparingEffectivenesscompression.png, id=464, 867.24pt x 578.
 16pt>
 File: Grafics/Compare/ComparingEffectivenesscompression.png Graphic file (type 
 png)
 <use Grafics/Compare/ComparingEffectivenesscompression.png>
 Package pdftex.def Info: Grafics/Compare/ComparingEffectivenesscompression.png 
- used on input line 565.
+ used on input line 561.
 (pdftex.def)             Requested size: 386.95897pt x 257.97292pt.
- [25 <./Grafics/Overflow/OverflowGetHeat.png> <./Grafics/Compare/Comparingcompr
+ [24 <./Grafics/Overflow/OverflowGetHeat.png> <./Grafics/Compare/Comparingcompr
 ession.png>]
-<Grafics/Compare/ComparingCompressTime.png, id=471, 1011.78pt x 578.16pt>
+<Grafics/Compare/ComparingCompressTime.png, id=477, 1011.78pt x 578.16pt>
 File: Grafics/Compare/ComparingCompressTime.png Graphic file (type png)
 <use Grafics/Compare/ComparingCompressTime.png>
 Package pdftex.def Info: Grafics/Compare/ComparingCompressTime.png  used on inp
-ut line 572.
+ut line 568.
 (pdftex.def)             Requested size: 386.95897pt x 221.12341pt.
-<Grafics/Compare/ComparingDecompressTime.png, id=472, 1011.78pt x 578.16pt>
+<Grafics/Compare/ComparingDecompressTime.png, id=478, 1011.78pt x 578.16pt>
 File: Grafics/Compare/ComparingDecompressTime.png Graphic file (type png)
 <use Grafics/Compare/ComparingDecompressTime.png>
 Package pdftex.def Info: Grafics/Compare/ComparingDecompressTime.png  used on i
-nput line 578.
+nput line 574.
 (pdftex.def)             Requested size: 386.95897pt x 221.12341pt.
- [26 <./Grafics/Compare/ComparingEffectivenesscompression.png> <./Grafics/Compa
-re/ComparingCompressTime.png>] [27 <./Grafics/Compare/ComparingDecompressTime.p
-ng>] [28]
-Underfull \hbox (badness 10000) in paragraph at lines 673--674
+ [25 <./Grafics/Compare/ComparingEffectivenesscompression.png> <./Grafics/Compa
+re/ComparingCompressTime.png>] [26 <./Grafics/Compare/ComparingDecompressTime.p
+ng>] [27]
+Underfull \hbox (badness 10000) in paragraph at lines 669--670
  []\T1/cmr/bx/n/10.95 II. Per-for-mance-Data and Mea-sure-ment[] \T1/cmr/m/n/10
 .95 These classes serve as the data model.
  []
 
-[29]
-Overfull \hbox (6.39284pt too wide) in paragraph at lines 748--765
+[28]
+Overfull \hbox (6.39284pt too wide) in paragraph at lines 745--762
  [][] 
  []
 
-[30]
-Underfull \hbox (badness 1137) in paragraph at lines 798--799
+[29]
+Underfull \hbox (badness 1137) in paragraph at lines 795--796
 []\T1/cmr/bx/n/10.95 Efficiency Cal-cu-la-tion: \T1/cmr/m/n/10.95 The script co
 m-putes the Com-pres-sion Ra-tio ($[] \OT1/cmr/m/n/10.95 = 1 \OMS/cmsy/m/n/10.9
 5 ^^@
  []
 
+[30]
+Underfull \hbox (badness 1122) in paragraph at lines 837--838
+\T1/cmr/m/n/10.95 Our anal-y-sis con-firms that the Over-flow method can in-dee
+d shrink the size of the spe-cific
+ []
+
 [31]
-Underfull \hbox (badness 10000) in paragraph at lines 831--832
+Underfull \hbox (badness 10000) in paragraph at lines 859--860
 []\T1/cmr/m/n/10.95 Apache Maven. (\T1/cmr/m/it/10.95 n.d.\T1/cmr/m/n/10.95 ). 
 \T1/cmr/m/it/10.95 In-tro-duc-tion to the Stan-dard Di-rec-tory Lay-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 831--832
+Underfull \hbox (badness 10000) in paragraph at lines 859--860
 \T1/cmr/m/it/10.95 out\T1/cmr/m/n/10.95 . Re-trieved from [][]$\T1/cmtt/m/n/10.
 95 https : / / maven . apache . org / guides / introduction /
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 832--833
+Underfull \hbox (badness 10000) in paragraph at lines 860--861
 []\T1/cmr/m/n/10.95 Geeks for Geeks. (\T1/cmr/m/it/10.95 n.d.\T1/cmr/m/n/10.95 
 ). \T1/cmr/m/it/10.95 Sep-a-ra-tion of Con-cerns (SoC)\T1/cmr/m/n/10.95 . Re-tr
 ieved from [][]$\T1/cmtt/m/n/10.95 https :
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 832--833
+Underfull \hbox (badness 10000) in paragraph at lines 860--861
 \T1/cmtt/m/n/10.95 / / www . geeksforgeeks . org / software-[]engineering / sep
 aration-[]of-[]concerns-[]soc /
  []
@@ -829,23 +824,17 @@ L3 programming layer <2024-01-22>
 
 LaTeX Warning: There were undefined references.
 
-
-Package rerunfilecheck Warning: File `Report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `Report.out':
-(rerunfilecheck)             Before: 314B84E65A11A0F7ED1CFA67E98BBE6D;7675
-(rerunfilecheck)             After:  B07E8D870D62C0BEAC6758795D06D655;7599.
+Package rerunfilecheck Info: File `Report.out' has not changed.
+(rerunfilecheck)             Checksum: 97956B1C2EA5E2681B98F9AED4C7D616;8178.
  ) 
 Here is how much of TeX's memory you used:
  13062 strings out of 476106
- 208546 string characters out of 5793933
- 1939975 words of memory out of 5000000
- 34732 multiletter control sequences out of 15000+600000
+ 208294 string characters out of 5793933
+ 1940975 words of memory out of 5000000
+ 34727 multiletter control sequences out of 15000+600000
  576637 words of font info for 75 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 75i,14n,79p,1058b,618s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,14n,79p,714b,543s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </home/loko/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600p
 k> </home/loko/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600p
 k> </home/loko/.texlive2023/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1200.600p
@@ -866,10 +855,10 @@ e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on Report.pdf (32 pages, 3501080 bytes).
+Output written on Report.pdf (32 pages, 3471813 bytes).
 PDF statistics:
- 1168 PDF objects out of 1200 (max. 8388607)
- 543 compressed objects within 6 object streams
- 172 named destinations out of 1000 (max. 500000)
- 448 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1184 PDF objects out of 1200 (max. 8388607)
+ 560 compressed objects within 6 object streams
+ 177 named destinations out of 1000 (max. 500000)
+ 467 words of extra memory for PDF output out of 10000 (max. 10000000)
 

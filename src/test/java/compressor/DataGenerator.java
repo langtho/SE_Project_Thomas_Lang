@@ -1,4 +1,4 @@
-package compressor.services;
+package compressor;
 
 import org.junit.jupiter.params.provider.Arguments;
 import java.util.Random;
@@ -31,7 +31,8 @@ public class DataGenerator {
                 {"medium_v",10000, 100000},                // Medium
                 {"medium_large_v",100000, 10000000},             // Medium-Large
                 {"large_v",10000000, 200000000},          // Large
-                {"mixed_v",0, 0}          // Mixed (full range)
+                {"mixed_v",0, 0},          // Mixed (full range)
+                {"small_large_mix", 0, 0}
         };
 
         // Generate streams for each combination of size and value ranges
@@ -60,7 +61,7 @@ public class DataGenerator {
             return Stream.empty();
         }
         final boolean isMixedRandom = valueLabel.startsWith("mixed_v");
-
+        final boolean isSmallLargeMix=valueLabel.startsWith("small_large_mix");
         return Stream.generate(() -> {
             int arraySize = RANDOM.nextInt(sizeRange[1] - sizeRange[0] + 1) + sizeRange[0];
             int[] randomArray = new int[arraySize];
@@ -70,8 +71,17 @@ public class DataGenerator {
                 for (int i = 0; i < arraySize; i++) {
                     int value;
 
+                    if(isSmallLargeMix){
+                        if (RANDOM.nextDouble() < 0.95) {
+                            value = RANDOM.nextInt(1024);
+                        } else {
+                            value = RANDOM.nextInt();
+                            if (value < 0) value = -value;
+                            if (value < 1024) value += 1024;
+                        }
 
-                    if (isMixedRandom) {
+                    }
+                    else if (isMixedRandom) {
                         int randomBits = RANDOM.nextInt(32) + 1; // 1 to 32 bits
 
                         if (randomBits == 32) {

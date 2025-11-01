@@ -267,12 +267,12 @@
 		\caption{Non Spanning Compress method: heatmap}
 		\label{fig:6}
 	\end{figure}
-	\texttt{Analyse}: At Figure \ref{fig:4} I observed a strictly increasing runtime across all tested array sizes, confirming that computational time is proportional to data volume. However, the Non-Spanning compression exhibits a critical performance anomaly between at >$5,000$ elements, where arrays with large or mixed values are processed significantly faster than the smaller valued arrays. 
+	\texttt{Analyse}: At Figure \ref{fig:4} I observed a strictly increasing runtime across all tested array sizes, confirming that computational time is proportional to data volume. However for small valued arrays this increase is less steep than for the rest  
 		\par % 
 	
-	At Figure \ref{fig:5} I grouped the array sizes and observed the time the different parts take in average to build the average runtime. Interesting is that small size arrays take a lot more time in setup than bigger ones which is explained by smaller chunks so a bit more to calculate this is confirmed by the $\text{bit\_needed}$ function which calculates the array size needed which takes half of the time in small arrays but significantly less in the others. The time forms a convex curve with it's minima at medium sized arrays 
+	At Figure \ref{fig:5} I grouped the array sizes and observed the time the different parts take in average to build the average runtime. Interesting is that what we already could observe in the precious figure that the time is increasing other than it may seem it isn't exponential because the possible space for small vsize is a lot less smaller than for large ones
 	
-	At Figure \ref{fig:6} We can clearly see that the combination of small sized arrays with small values take up to 6-times longer than the other combinations.
+	At Figure \ref{fig:6} We can clearly see that the combination of large sized arrays with small values take up to 6-times longer than the other combinations.
 	
 	\paragraph{The decompression method}
 	\begin{figure}[H]% =
@@ -295,8 +295,8 @@
 		\caption{Non Spanning Decompress method: heatmap}
 		\label{fig:9}
 	\end{figure}
-	\texttt{Analyse}: At Figure \ref{fig:7} we see a similar evolution as in the compress method. Only we see an "anomaly" for the small arrays which could be because there are more test cases in this area. Observable too is that small values take a lot less time than the rest the bigger the array gets. 
-	The Figure \ref{fig:8} shows us that we have an growth with the array size what is confiremed by the anterior figure. Interesting is that the setup for small arrays takes more than half of it's full time.
+	\texttt{Analyse}: At Figure \ref{fig:7} we see a similar evolution as in the compress method. Only we see it is generally faster und that we have for big arrays a large time needed before 5000 array sizes and it inverses afterwards. We can observe this change often at the 5000 mark.
+	The Figure \ref{fig:8} shows us that we have an growth with the array size what is confirmed by the anterior figure. Interesting is that the setup for small arrays takes more than half of it's full time.
 	The heatmap in Figure \ref{fig:9} jsut confirms our observations in the previous figures.
 	  
 	\paragraph{The get method}
@@ -381,7 +381,9 @@
 		\caption{Spanning Compress method: heatmap}
 		\label{fig:15}
 	\end{figure}
-	\texttt{Analyse}: Here at Figure \ref{fig:13} we see a linear growth of the time taken by the compression for a growing array size. Two things fall into the eye: First, for small array sizes this linear growth isn't the case it takes even more time than for slightly bigger arrays >1000. Second, the variation of time from the average time gets bigger with the array size. In Figure \ref{fig:14} we see that the compression time even gets lower until a point with growing until for large size. We have again like in the NonSpanning case the case that the small arrays take in average a lot more time but this can be explained with Figure \ref{fig:15} where we see that the average is altered by the combination of small sized arrays with 10-14 bit values and mixed ones where the compression takes more than 3 times more time than for other compressions. Interesting in this case is that again the bit needed function time takes half of the whole average time of the compression of this case 
+	\texttt{Analyse}: Here at Figure \ref{fig:13} we see a linear growth of the time taken by the compression for a growing array size. Two things fall into the eye: First, for small to medium array sizes this linear growth is steep. Interestingly after 5000 all arrays are treated much faster but again a linear growth wich is less steep than before. 
+	
+	In Figure \ref{fig:14} we see that the compression time gets higher until a point at the medium large size and then drops again to the same time like the medium arrays. It seems like we have an anomaly at medium large sized arrays, this can be explained with Figure \ref{fig:15} where we see that the higher time taken is high for all of these types of arrays. Which confirms our change at the 5000 sized arrays. 
 	\par % 
 	
 	
@@ -406,7 +408,7 @@
 		\caption{Spanning Decompress method: heatmap}
 		\label{fig:18}
 	\end{figure}
-	\texttt{Analyse}: The Figure \ref{fig:16} is relatively similar to the Figure \ref{fig:13} in the compress method where we can observe the same things a wider dispersion of the times the bigger the array and anomaly in small array sizes.In Figure \ref{fig:17} we have high average times in the extremes for between those we can observe a curve that find its minima in medium sized arrays. The heatmap at Figure \ref{fig:18} confirms this. But for large arrays we can see that no matter the values it takes always the same time for small sized arrays we can see that small values take more time and the bigger the values get the faster de decompression gets. Mixed values fall in the same case as small size values. The optimum is clearly in the medium values x medium sized arrays.
+	\texttt{Analyse}: The Figure \ref{fig:16} is relatively similar to the Figure \ref{fig:13} in the compress method where we can observe a wider dispersion of the times the bigger the array and anomaly in small array sizes only the turning point is earlier at around 1000.In Figure \ref{fig:17} we have a more or less ninear growth of time xith a little peak at the medium sized arrays. The heatmap at Figure \ref{fig:18} confirms this. But for large arrays we can see that the execution time is the same for all except the small large mix which changes the average.
 	
 	\paragraph{The get method}
 	\begin{figure}[H]% =
@@ -479,13 +481,7 @@ Decompression and random access must meticulously follow the structure defined b
 		\caption{Compressed array size vs uncompressed array size}
 		\label{fig:21}
 	\end{figure}
-	\begin{figure}[H]% =
-		\centering
-		\includegraphics[width=0.8\textwidth]{Grafics/Overflow/OverflowEffectiveness.png}
-		\caption{The compression ratio vs Array size}
-		\label{fig:22}
-	\end{figure}
-	\texttt{Analyse}: The Figure \ref{fig:21} shows us a Figure really similar to the Figure \ref{fig:12} this can be explained by the Overflow needing special conditions to be effective. In our case my test cases only include homogneous values and for the mixed variables we are talking about the bit size of the values being chosen randomly so the distribution is in most cases even. For the overflow to be effective we need for example many small values and some real high ones. In our test cases we always tend to higher chunk sizes. That my overflow function is effective is visible in Figure \ref{fig:22} where we see in the yellow line that the effectiveness isn't dependent on array size.
+	\texttt{Analyse}: The Figure \ref{fig:21} shows us a Figure really similar to the Figure \ref{fig:12} . The only but important difference is that for small\_large\_mix which took at the spanning compression as much space as an large valued array. But here it takes just a little more than a a small array. This shows that the Overflow strategy is effective but needs a non homogeneous array to have an impact.  
 	
 	\paragraph{The compress method}
 	\begin{figure}[H]% =
@@ -508,7 +504,7 @@ Decompression and random access must meticulously follow the structure defined b
 		\caption{Overflow Compress method: heat map}
 		\label{fig:25}
 	\end{figure}
-	\texttt{Analyse}: The Figure \ref{fig:23} shows us for the most types of arrays a linear growth of time. But different to the other strategies we can see a separation between the value types wich indicates that those also have an influence on the execution time. We have equally a convex curve in Figure\ref{fig:24} the minima is now how we can see in Figure \ref{fig:25} placed more in the large value x small size arrays xith a maxima at the large array small value side 
+	\texttt{Analyse}: The Figure \ref{fig:23} shows us for the most types of arrays a linear growth of time. But different to the other strategies we can see a separation between the value types wich indicates that those also have an influence on the execution time. We have equally a linear growth in Figure\ref{fig:24} the minima is now how we can see in Figure \ref{fig:25} placed more in the large value and small size arrays with a maxima at the large array small value side 
 	\par % 
 	
 	
@@ -533,7 +529,7 @@ Decompression and random access must meticulously follow the structure defined b
 		\caption{Overflow Decompress method: heatmap}
 		\label{fig:28}
 	\end{figure}
-	\texttt{Analyse}: The decompression method shows in Figure \ref{fig:26} a steep growth of time with growing arrays where the dispersion of the time off the average time gets bigger the bigger the array. With the exception after 5000 array size for the large values which get really effective. Figure \ref{fig:27} shows almost an exponentional growth of the average time taken. The heat map \ref{fig:28} shows that especially for large arrays it takes up to 10 times as much time as the category beneath.
+	\texttt{Analyse}: The decompression method shows in Figure \ref{fig:26} a steep growth of time with growing arrays where the dispersion of the time off the average time gets bigger the bigger the array. With the exception after 5000 array size for the small\_large mixed values which get really effective. Figure \ref{fig:27} shows  an linear growth of the average time taken. The heat map \ref{fig:28} shows that especially for large arrays it takes up to 10 times as much time as the category beneath.
 	
 	\paragraph{The get method}
 	\begin{figure}[H]% =
@@ -566,7 +562,7 @@ Decompression and random access must meticulously follow the structure defined b
 		\caption{Comparison of compression effectiveness}
 		\label{fig:32}
 	\end{figure}
-	\texttt{Analyse}: Figure \ref{fig:31} and \ref{fig:32} show us what we already analyzed in the graphs for each compression strategy. What we can observe is that in our test cases  We can observe almost for each category the same pattern: The nonSpanning strategy is the least effective and the spanning in our test cases the most effective because we have many homogenous arrays. The overflow strategy is always in between both but can at some cases be more effective how we see in \ref{fig:32} at the small arrays where we have a peak for the overflow strategy. That the overflow strategy isn't more efficent is due to our test cases which are to homogenuous.
+	\texttt{Analyse}: Figure \ref{fig:31} and \ref{fig:32} show us what we already analyzed in the graphs for each compression strategy. What we can observe is that in our test cases  We can observe almost for each category the same pattern: The nonSpanning strategy is the least effective and the spanning in our test cases the most effective because we have many homogenous arrays. The overflow strategy is always in between both but can at some cases be more effective. This is the case for arrays with many small values and very fey big ones. where it gets really effective
 	\begin{figure}[H]% =
 		\centering
 		\includegraphics[width=0.8\textwidth]{Grafics/Compare/ComparingCompressTime.png}
@@ -579,7 +575,7 @@ Decompression and random access must meticulously follow the structure defined b
 		\caption{Comparison of compression effectiveness}
 		\label{fig:34}
 	\end{figure}
-	\texttt{Analyse}: Analysing the time each compression strategy takes to compress \ref{fig:33} is interesting because for the spanning strategy the time taken is getting shorter with the array size and gets bigger only at really large arrays and its the opposite for the other two compression methods. For the decompression method really interesting is that the Overflow method for really big arrays is more than 4 times higher than the strategys at the same arrays
+	\texttt{Analyse}: Analysing the time each compression strategy takes to compress \ref{fig:33} is interesting because for the spanning strategy the time taken is getting shorter with the array size and gets bigger only at really large arrays and its the opposite for the other two compression methods. For the decompression method really interesting is that the Overflow method for really big arrays is more than 4 times higher than the spanning strategies at the same arrays. Interesting is that the non spanning strategy takes for the compression more time at large arrays which shouldnt be the case because it is the less complicated to calculate.
 	
 	\section{Handling Negative Integers (Proposition)}
 	
@@ -725,6 +721,7 @@ Decompression and random access must meticulously follow the structure defined b
 			\texttt{large\_v} & $10,000,000$ to $200,000,000$ & $24$ to $28$ bits \\
 			\hline
 			\texttt{mixed\_v} & $\approx 0$ to $2^{31}-1$ & $\mathbf{1 \text{ to } 32 \text{ bits (Random)}}$ \\
+			\texttt{small\_large\_mix\_v} & 95\% <10 bits 5\% >14 bits & $\mathbf{1 \text{ to } 32 \text{ bits (Random)}}$ \\
 			\hline
 		\end{tabular}
 	\end{table}
@@ -820,7 +817,38 @@ Decompression and random access must meticulously follow the structure defined b
 		
 		\item \textbf{Compression Ratio Plot:} Visualizes the calculated Compression Ratio ($\text{0-1}$) against the array size ($\text{N}$). This is the most accurate method to compare the **effectiveness** of algorithms, especially when size reduction is minimal.
 	\end{itemize}
-	% --- REPORT CONTENT ENDS HERE ---
+	
+	\section{Conclusion}
+	
+	The main goal of this project was to build and test three ways to compress arrays of integers using \textbf{Bit Packing}: the basic \textbf{Non-Spanning} and \textbf{Spanning} methods, and the more advanced \textbf{Overflow Area} method. Our performance tests give us a clear view of the trade-offs for each approach, especially the critical balance between how much space is saved and how much computing time is needed.
+	
+	\subsection{Summary of Strategy Trade-offs}
+	
+	The three methods each fit different needs, showing their key strengths:
+	
+	\begin{itemize}
+		\item \textbf{Non-Spanning (\texttt{NonSpanningBP}):} Best for applications that need to find any value quickly (near-$O(1)$ \textbf{direct access}). It saves less space because it has to leave gaps to keep values within 32-bit blocks.
+		\item \textbf{Spanning (\texttt{SpanningBP}):} Achieves the most space savings possible for an array. This is perfect for when transferring data speed is the main problem, especially with data where all the numbers are about the same size.
+	\item \textbf{Overflow Area (\texttt{OverflowBP}):} Offers a solution for data that has mostly small numbers but a few very large ones (outliers). It tries to keep the efficiency of small bit-packing while handling large values separately.
+	\end{itemize}
+	
+	\subsection{Final Verdict on the Overflow Strategy}
+	
+	Our analysis confirms that the Overflow method can indeed shrink the size of the specific $\texttt{small\_large\_mix}$ array type (Figure \ref{fig:20}). However, this small saving comes with a \textbf{high cost in computing time}.
+	
+	The \texttt{OverflowBP} method is much more complicated to run because:
+	\begin{enumerate}
+	\item It needs a more complex system (Elias Gamma) just to handle the size of the overflow data.
+	\item It has to check an extra bit (the marker bit) for every single number, which slows things down.
+	\item The process for finding a single number (\texttt{get}) is far more complex, involving the marker check, spanning logic, and possibly looking up the full value in the separate Overflow Area.
+	\end{enumerate}
+	
+	
+	In conclusion, our performance tests show that the more complex algorithm for overflow variables is not worth the only few real-life cases where it could be efficient. Because it's so complicated and takes longer to decompress, the \texttt{OverflowBP} strategy is not practical for general use. For almost every situation, the best choice is to pick either the simple and fast \textbf{Non-Spanning} method or the space-saving \textbf{Spanning} method, depending on whether speed or size is most important.
+
+
+
+
 	
 	\section*{Appendix A: GitHub Repository Details}
 	\url{https://github.com/langtho/SE_Project_Thomas_Lang/} % Placeholder

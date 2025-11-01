@@ -1,6 +1,9 @@
-package compressor.services;
+package compressor;
 
 import compressor.logger.LoggerFactory;
+import compressor.services.NonSpanningBP;
+import compressor.services.OverflowBP;
+import compressor.services.SpanningBP;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -55,11 +58,7 @@ class BitPackerTest {
                 Arguments.of("small_s","small_medium_v", new int[]{1, 2, 1024, 3, 4, 2048}),
                 Arguments.of("small_s","small_medium_v", new int[]{1, 2, 1024, 3, 4, 2048})
 
-                // --- Negative Numbers Not solvable for the moment---
-                /*
-                Arguments.of(new int[]{-1, -100, -1000, 1000, 100}),
-                Arguments.of(new int[]{-5, -10, -15})
-                 */
+
         );
     }
 

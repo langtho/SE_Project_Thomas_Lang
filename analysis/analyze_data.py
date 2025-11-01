@@ -14,7 +14,8 @@ VALUE_COLORS = {
     'medium_v': 'green', 
     'medium_large_v': 'orange', 
     'large_v': 'red', 
-    'mixed_v': 'purple'
+    'mixed_v': 'purple',
+    'small_large_mix' :'pink'
 }
 COMPRESSION_STYLES = {
     'NonSpanning': 'solid', 
@@ -672,8 +673,8 @@ def main():
     ]
 
     # --- 2. Iteration and Execution of Individual Plots ---
-    #for comp_type, func_type in PLOT_COMBINATIONS:
-        #process_and_plot(df, comp_type, func_type, INDIVIDUAL_PLOTS)
+    for comp_type, func_type in PLOT_COMBINATIONS:
+        process_and_plot(df, comp_type, func_type, INDIVIDUAL_PLOTS)
 
     # --- 3. Execution of Global Comparison Plots ---
     
