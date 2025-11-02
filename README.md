@@ -27,10 +27,10 @@ java -jar out/artifacts/compressor_jar/my-app.jar <comression_strategie> <method
 ```
 #### Example of an excecution 
 ```bash
-java -jar out/artifacts/compressor_jar/my-app.jar overflow compress ../../src.txt ../../dest.txt --logging DEBUG --performance src/main/resources/performance_data.jsonl 
+java -jar out/artifacts/compressor_jar/my-app.jar overflow compress src.txt dest.txt --logging DEBUG --performance src/main/resources/performance_data.jsonl 
 ```
 ```bash
-java -jar out/artifacts/compressor_jar/my-app.jar overflow get ../../dest.txt ../../src.txt 2 --logging NONE --performance src/main/resources/performance_data.jsonl 
+java -jar out/artifacts/compressor_jar/my-app.jar overflow get dest.txt src.txt 2 --logging NONE --performance src/main/resources/performance_data.jsonl 
 ```
 #### comression_strategie
 | option |                               explanation |
